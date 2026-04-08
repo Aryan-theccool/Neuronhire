@@ -1,48 +1,56 @@
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
+import { signup } from '../actions'
 
-export default function SignupPage() {
+export default function SignupPage({
+  searchParams,
+}: {
+  searchParams: { message: string }
+}) {
   const [role, setRole] = useState<'engineer' | 'company'>('engineer')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-
-  const handleSignup = async (e: React.FormEvent) => {
-    e.preventDefault()
-    alert('Signup as ' + role + ': ' + email)
-  }
 
   return (
     <div style={{maxWidth: 420, margin: '4rem auto', padding: '0 1.5rem'}}>
       <h1 style={{textAlign: 'center', marginBottom: '0.5rem'}}>Join NeuronHire</h1>
       <p style={{textAlign: 'center', color: 'var(--on-surface-variant)', marginBottom: '2rem'}}>Start your AI career or find top AI talent</p>
 
+      {searchParams?.message && (
+        <p className="error-message" style={{color: 'red', textAlign: 'center', marginBottom: '1rem'}}>
+          {searchParams.message}
+        </p>
+      )}
+
       <div style={{display: 'flex', gap: '0.5rem', marginBottom: '1.5rem'}}>
         <button
+          type="button"
           className={role === 'engineer' ? 'btn-primary' : 'btn-secondary'}
           style={{flex: 1}} onClick={() => setRole('engineer')}>
           {"I'm an Engineer"}
         </button>
         <button
+          type="button"
           className={role === 'company' ? 'btn-primary' : 'btn-secondary'}
           style={{flex: 1}} onClick={() => setRole('company')}>
           {"I'm a Company"}
         </button>
       </div>
 
-      <form onSubmit={handleSignup}>
+      <form action={signup}>
+        <input type="hidden" name="role" value={role} />
         <div className="form-group">
           <label className="form-label">Email</label>
-          <input className="form-input" type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="you@example.com" required />
+          <input className="form-input" type="email" name="email" placeholder="you@example.com" required />
         </div>
         <div className="form-group">
           <label className="form-label">Password</label>
-          <input className="form-input" type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Min 8 characters" required minLength={8} />
+          <input className="form-input" type="password" name="password" placeholder="Min 8 characters" required minLength={8} />
         </div>
         <button type="submit" className="btn-primary" style={{width: '100%', marginTop: '0.5rem'}}>
           Create {role === 'engineer' ? 'Engineer' : 'Company'} Account
         </button>
       </form>
+      
       <div style={{textAlign: 'center', margin: '1.5rem 0', color: 'var(--outline)'}}>or</div>
       <button className="btn-secondary" style={{width: '100%', marginBottom: '0.75rem'}}>Continue with GitHub</button>
       <button className="btn-secondary" style={{width: '100%'}}>Continue with Google</button>
