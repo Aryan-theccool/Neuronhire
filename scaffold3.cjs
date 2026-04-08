@@ -1,4 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+const fs = require('fs');
+const path = require('path');
+function w(f, c) {
+  const d = path.dirname(f);
+  if (!fs.existsSync(d)) fs.mkdirSync(d, {recursive: true});
+  fs.writeFileSync(f, c, 'utf8');
+  console.log('OK: ' + f);
+}
+
+// === app/globals.css ===
+w('app/globals.css',
+`@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
   --bg: #060e20;
@@ -445,3 +456,6 @@ a:hover { color: var(--primary-container); }
   border-radius: var(--radius-md);
 }
 @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+`);
+
+console.log('globals.css done!');
