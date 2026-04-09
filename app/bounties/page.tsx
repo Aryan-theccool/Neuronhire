@@ -1,5 +1,6 @@
 import BountyCard from '@/components/hiring/BountyCard'
 import { createClient } from '@/lib/supabase/server'
+import { SAMPLE_BOUNTIES } from '@/lib/samples'
 
 export const revalidate = 0;
 
@@ -11,7 +12,8 @@ export default async function BountiesPage() {
     .select('*, company:companies(company_name, logo_url)')
     .order('created_at', { ascending: false })
 
-  const displayBounties = dbBounties || [];
+  // Inject samples if DB is empty for demo "Wow" factor
+  const displayBounties = (dbBounties && dbBounties.length > 0) ? dbBounties : SAMPLE_BOUNTIES;
 
   return (
     <div className="page-container">

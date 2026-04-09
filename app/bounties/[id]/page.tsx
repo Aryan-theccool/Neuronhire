@@ -4,33 +4,42 @@ import Link from 'next/link'
 import BountySubmissionForm from '@/components/hiring/BountySubmissionForm'
 import { formatCurrency } from '@/lib/utils'
 
+import { SAMPLE_BOUNTIES } from '@/lib/samples'
+
 export const revalidate = 60
 
 export default async function BountyDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
   const supabase = await createClient()
 
-  // Fetch bounty with company info
-  const { data: bounty, error } = await supabase
-    .from('bounties')
-    .select('*, company:companies(*)')
-    .eq('id', id)
-    .single()
-
-  if (error || !bounty) {
-    notFound()
-  }
-
-  // Check if current user is an engineer
-  const { data: { user } } = await supabase.auth.getUser()
+  let bounty: any = null
   let isEngineer = false
-  if (user) {
-    const { data: engineer } = await supabase
-      .from('engineers')
-      .select('id')
-      .eq('id', user.id)
+
+  // Handle Sample Data
+  if (id.startsWith('sample-')) {
+    bounty = SAMPLE_BOUNTIES.find(b => b.id === id)
+    if (!bounty) notFound()
+  } else {
+    // Fetch real bounty from Supabase
+    const { data: dbBounty, error } = await supabase
+      .from('bounties')
+      .select('*, company:companies(*)')
+      .eq('id', id)
       .single()
-    isEngineer = !!engineer
+
+    if (error || !dbBounty) notFound()
+    bounty = dbBounty
+
+    // Check auth for real bounties
+    const { data: { user } } = await supabase.auth.getUser()
+    if (user) {
+      const { data: engineer } = await supabase
+        .from('engineers')
+        .select('id')
+        .eq('id', user.id)
+        .single()
+      isEngineer = !!engineer
+    }
   }
 
   const deadline = bounty.deadline ? new Date(bounty.deadline) : null

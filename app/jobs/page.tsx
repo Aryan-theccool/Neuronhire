@@ -1,5 +1,6 @@
 import JobCard from '@/components/hiring/JobCard'
 import { createClient } from '@/lib/supabase/server'
+import { SAMPLE_JOBS } from '@/lib/samples'
 
 export const revalidate = 0; // Disable caching so it always gets the latest DB data
 
@@ -12,7 +13,8 @@ export default async function JobsPage() {
     .select('*, company:companies(company_name, logo_url)')
     .order('created_at', { ascending: false })
 
-  const displayJobs = dbJobs || [];
+  // Inject samples if DB is empty for demo "Wow" factor
+  const displayJobs = (dbJobs && dbJobs.length > 0) ? dbJobs : SAMPLE_JOBS;
 
   return (
     <div className="page-container">

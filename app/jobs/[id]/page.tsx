@@ -5,39 +5,44 @@ import ApplyForm from '@/components/hiring/ApplyForm'
 import { formatCurrency } from '@/lib/utils'
 import TalentSuggestions from '@/components/hiring/TalentSuggestions'
 
+import { SAMPLE_JOBS } from '@/lib/samples'
+
 export const revalidate = 60
 
 export default async function JobDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
   const supabase = await createClient()
 
-  // Fetch job with company info
-  const { data: job, error } = await supabase
-    .from('job_postings')
-    .select('*, company:companies(*)')
-    .eq('id', id)
-    .single()
-
-  if (error || !job) {
-    notFound()
-  }
-
-  // Check if current user is an engineer to show application form
-  const { data: { user } } = await supabase.auth.getUser()
+  let job: any = null
   let isEngineer = false
   let isOwner = false
 
-  if (user) {
-    // Check if engineer
-    const { data: engineer } = await supabase
-      .from('engineers')
-      .select('id')
-      .eq('id', user.id)
+  // Handle Sample Data
+  if (id.startsWith('sample-')) {
+    job = SAMPLE_JOBS.find(j => j.id === id)
+    if (!job) notFound()
+  } else {
+    // Fetch real job from Supabase
+    const { data: dbJob, error } = await supabase
+      .from('job_postings')
+      .select('*, company:companies(*)')
+      .eq('id', id)
       .single()
-    isEngineer = !!engineer
 
-    // Check if owner
-    isOwner = job.company_id === user.id
+    if (error || !dbJob) notFound()
+    job = dbJob
+
+    // Check auth for real jobs
+    const { data: { user } } = await supabase.auth.getUser()
+    if (user) {
+      const { data: engineer } = await supabase
+        .from('engineers')
+        .select('id')
+        .eq('id', user.id)
+        .single()
+      isEngineer = !!engineer
+      isOwner = job.company_id === user.id
+    }
   }
 
   return (
