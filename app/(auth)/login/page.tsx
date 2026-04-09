@@ -1,19 +1,20 @@
+'use client'
 import Link from 'next/link'
 import { login } from '../actions'
+import { useSearchParams } from 'next/navigation'
 
-export default function LoginPage({
-  searchParams,
-}: {
-  searchParams: { message: string }
-}) {
+export default function LoginPage() {
+  const searchParams = useSearchParams()
+  const message = searchParams.get('message')
+
   return (
     <div style={{maxWidth: 420, margin: '4rem auto', padding: '0 1.5rem'}}>
       <h1 style={{textAlign: 'center', marginBottom: '0.5rem'}}>Welcome Back</h1>
       <p style={{textAlign: 'center', color: 'var(--on-surface-variant)', marginBottom: '2rem'}}>Sign in to your NeuronHire account</p>
       
-      {searchParams?.message && (
+      {message && (
         <p className="error-message" style={{color: 'red', textAlign: 'center', marginBottom: '1rem'}}>
-          {searchParams.message}
+          {message}
         </p>
       )}
 

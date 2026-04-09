@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { formatINR } from '@/lib/utils'
+import Link from 'next/link'
+import { formatCurrency } from '@/lib/utils'
 
 interface BountyCardProps {
   bounty: {
@@ -33,14 +34,16 @@ export default function BountyCard({ bounty }: BountyCardProps) {
 
   return (
     <div className="bounty-card">
-      <div className="bounty-card__reward">{formatINR(bounty.reward_inr)}</div>
+      <div className="bounty-card__reward">{formatCurrency(bounty.reward_inr)}</div>
       <h3 className="bounty-card__title">{bounty.title}</h3>
       <p className="bounty-card__desc">{bounty.problem_description.slice(0, 120)}...</p>
       {timeLeft && <span className="bounty-card__deadline">{timeLeft}</span>}
       <div className="bounty-card__skills">
-        {bounty.skills_needed?.map(s => <span key={s} className="stack-chip">{s}</span>)}
+        {(bounty.skills_needed || []).map(s => <span key={s} className="stack-chip">{s}</span>)}
       </div>
-      <button className="btn-primary">Submit Solution</button>
+      <Link href={`/bounties/${bounty.id}`} className="btn-primary" style={{display: 'block', textAlign: 'center', textDecoration: 'none'}}>
+        View Bounty
+      </Link>
     </div>
   )
 }

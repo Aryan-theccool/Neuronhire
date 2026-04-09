@@ -1,4 +1,5 @@
-import { formatINR } from '@/lib/utils'
+import Link from 'next/link'
+import { formatCurrency } from '@/lib/utils'
 
 const TYPE_COLORS: Record<string, string> = {
   fulltime: '#10b981',
@@ -36,13 +37,15 @@ export default function JobCard({ job }: JobCardProps) {
       {job.company && <p className="job-card__company">{job.company.company_name}</p>}
       <div className="job-card__budget">
         {job.budget_min_inr && job.budget_max_inr
-          ? `${formatINR(job.budget_min_inr)} - ${formatINR(job.budget_max_inr)}`
+          ? `${formatCurrency(job.budget_min_inr)} - ${formatCurrency(job.budget_max_inr)}`
           : 'Budget flexible'}
       </div>
       <div className="job-card__skills">
-        {job.skills_required?.map(s => <span key={s} className="stack-chip">{s}</span>)}
+        {(job.skills_required || []).map(s => <span key={s} className="stack-chip">{s}</span>)}
       </div>
-      <button className="btn-primary">View & Apply</button>
+      <Link href={`/jobs/${job.id}`} className="btn-primary" style={{display: 'block', textAlign: 'center', textDecoration: 'none'}}>
+        View & Apply
+      </Link>
     </div>
   )
 }

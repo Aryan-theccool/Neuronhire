@@ -1,16 +1,29 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
+import { CompanyForms } from '@/components/dashboard/CompanyForms'
+import { EngineerForms } from '@/components/dashboard/EngineerForms'
 
 export default async function DashboardPage() {
-  const supabase = createClient()
+  const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
   if (!user) {
     redirect('/login')
   }
 
-  // Get the role from user metadata
   const role = user.user_metadata?.role || 'engineer'
+  let profile = null;
+  let projects: any[] = [];
+
+  if (role === 'company') {
+    const { data } = await supabase.from('companies').select('*').eq('id', user.id).single()
+    profile = data
+  } else {
+    const { data: pData } = await supabase.from('engineers').select('*').eq('id', user.id).single()
+    profile = pData
+    const { data: projData } = await supabase.from('projects').select('*').eq('engineer_id', user.id).order('created_at', { ascending: false })
+    projects = projData || []
+  }
 
   return (
     <div className="page-container">
@@ -21,11 +34,24 @@ export default async function DashboardPage() {
       </div>
 
       <div className="grid-2">
-        <div className="stat-card" style={{gridColumn: '1/3', display: 'flex', justifyContent: 'center',flexDirection: 'column',alignItems: 'center', padding: '3rem', border: '1px solid var(--outline-variant)'}}>
-          <h2 style={{color: 'var(--on-surface-variant)'}}>Pending Database Setup</h2>
-          <p style={{textAlign: 'center', maxWidth: 600, marginTop: '1rem'}}>
-            Currently, we do not have real user profile data to display because the Supabase database migrations have not been run, and your `.env.local` Supabase keys need to be configured. 
-          </p>
+        <div className="stat-card">
+          <h2 style={{color: 'var(--on-surface-variant)', marginBottom: '1rem'}}>Profile Status</h2>
+          {profile ? (
+            <div style={{background: 'rgba(0,255,0,0.1)', padding: '1rem', borderRadius: '8px', border: '1px solid rgba(0,255,0,0.3)'}}>
+              <h3 style={{color: '#4ade80'}}>✅ Connected</h3>
+              <p>Your Supabase profile is active.</p>
+            </div>
+          ) : (
+            <div style={{background: 'rgba(255,0,0,0.1)', padding: '1rem', borderRadius: '8px', border: '1px solid rgba(255,0,0,0.3)'}}>
+              <h3 style={{color: '#f87171'}}>⚠️ Profile Not Found</h3>
+              <p>Please re-run the Auth triggers in Database.</p>
+            </div>
+          )}
+        </div>
+
+        {/* Action Panel based on Role */}
+        <div style={{gridColumn: '1 / -1', marginTop: '2rem'}}>
+            {role === 'company' ? <CompanyForms /> : <EngineerForms profile={profile} projects={projects} />}
         </div>
       </div>
     </div>

@@ -1,15 +1,19 @@
 import JobCard from '@/components/hiring/JobCard'
+import { createClient } from '@/lib/supabase/server'
 
-const JOBS = [
-  { id: '1', title: 'Senior LLM Engineer — RAG Pipeline', engagement_type: 'fulltime', skills_required: ['LangChain','Python','RAG','PostgreSQL'], budget_min_inr: 2500000, budget_max_inr: 4000000, min_neuron_score: 700, company: { company_name: 'NovaMind AI', logo_url: null } },
-  { id: '2', title: 'AI Intern — Computer Vision R&D', engagement_type: 'internship', skills_required: ['PyTorch','OpenCV','Python'], budget_min_inr: 15000, budget_max_inr: 25000, min_neuron_score: 200, company: { company_name: 'VisionLabs', logo_url: null } },
-  { id: '3', title: 'Hourly — Fine-tune Llama 3 on Medical Data', engagement_type: 'hourly', skills_required: ['Transformers','LoRA','Python','PEFT'], budget_min_inr: 3000, budget_max_inr: 6000, min_neuron_score: 500, company: { company_name: 'MedAI Corp', logo_url: null } },
-  { id: '4', title: 'Build Multi-Agent Workflow for Legal Review', engagement_type: 'project', skills_required: ['AutoGen','CrewAI','LangGraph','Python'], budget_min_inr: 150000, budget_max_inr: 300000, min_neuron_score: 600, company: { company_name: 'LegalEase AI', logo_url: null } },
-  { id: '5', title: 'MLOps Engineer — Production Model Serving', engagement_type: 'fulltime', skills_required: ['MLflow','Docker','K8s','FastAPI'], budget_min_inr: 1800000, budget_max_inr: 3200000, min_neuron_score: 500, company: { company_name: 'ScaleStack', logo_url: null } },
-  { id: '6', title: 'AI Product Manager Intern', engagement_type: 'internship', skills_required: ['Product Strategy','AI/ML','Data Analysis'], budget_min_inr: 20000, budget_max_inr: 35000, min_neuron_score: 100, company: { company_name: 'Buildr AI', logo_url: null } },
-];
+export const revalidate = 0; // Disable caching so it always gets the latest DB data
 
-export default function JobsPage() {
+export default async function JobsPage() {
+  const supabase = await createClient()
+  
+  // Join with the companies table to get the company_name
+  const { data: dbJobs, error } = await supabase
+    .from('job_postings')
+    .select('*, company:companies(company_name, logo_url)')
+    .order('created_at', { ascending: false })
+
+  const displayJobs = dbJobs || [];
+
   return (
     <div className="page-container">
       <div className="page-header">
@@ -41,7 +45,15 @@ export default function JobsPage() {
           </div>
         </aside>
         <div className="grid-2">
-          {JOBS.map(j => <JobCard key={j.id} job={j} />)}
+          {displayJobs.length > 0 ? (
+            displayJobs.map((j: any) => <JobCard key={j.id} job={j} />)
+          ) : (
+            <div style={{gridColumn: '1/-1', textAlign: 'center', padding: '4rem', color: 'var(--text-secondary)'}}>
+              <p style={{fontSize: '2rem', marginBottom: '0.5rem'}}>🤖</p>
+              <p style={{fontWeight: 600}}>No jobs posted yet.</p>
+              <p style={{marginTop: '0.5rem'}}>Be the first — post a job from your Dashboard!</p>
+            </div>
+          )}
         </div>
       </div>
     </div>

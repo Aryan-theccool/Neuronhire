@@ -1,33 +1,44 @@
 import NeuronScoreRing from '@/components/profile/NeuronScoreRing'
 import SkillBadge from '@/components/profile/SkillBadge'
+import { createClient } from '@/lib/supabase/server'
+import { notFound } from 'next/navigation'
+import Link from 'next/link'
+import { formatCurrency } from '@/lib/utils'
 
-const DEMO = {
-  username: 'arjun_ml',
-  full_name: 'Arjun Sharma',
-  bio: 'LLM engineer building production RAG systems. 4+ years shipping AI products at scale. Passionate about making AI accessible for Indian enterprises.',
-  location: 'Bangalore, India',
-  ai_philosophy: 'The best AI system is the one that makes itself unnecessary by empowering humans to solve their own problems.',
-  github_url: 'https://github.com/arjun-ml',
-  linkedin_url: 'https://linkedin.com/in/arjun-ml',
-  ai_stack: ['Python', 'LangChain', 'FastAPI', 'PostgreSQL', 'PyTorch', 'Docker'],
-  specializations: ['RAG', 'Fine-tuning', 'LLM Deployment'],
-  neuron_score: 940,
-  hourly_rate_inr: 3500,
-  badges: [
-    { badge_type: 'LLM Fundamentals', verified: true },
-    { badge_type: 'RAG Architect', verified: true },
-    { badge_type: 'MLOps', verified: true },
-    { badge_type: 'Fine-tuning', verified: false },
-  ],
-  projects: [
-    { title: 'LegalRAG — AI Legal Assistant', problem: 'Indian lawyers spend 60% of time on document review. No existing tool handles Indian legal corpus effectively.', approach: 'Built a RAG pipeline with hybrid search (BM25 + FAISS) over 50K court judgments. Used LangChain with custom citation chains.', outcome: 'Reduced document review time by 70%. Deployed for 3 law firms with 94% answer accuracy.', tech_stack: ['LangChain','FAISS','FastAPI','React'] },
-    { title: 'MedTranscribe — Clinical Note Generator', problem: 'Doctors dictate notes in mixed Hindi-English. No existing ASR + NLU pipeline handles code-switching accurately.', approach: 'Fine-tuned Whisper on 500hrs of Indian medical dictation. Built NLU layer for structured SOAP note extraction.', outcome: 'Achieved 92% transcription accuracy on code-switched audio. Deployed across 5 clinics saving 2hrs/doctor/day.', tech_stack: ['Whisper','PyTorch','FastAPI','PostgreSQL'] },
-  ]
-};
+export const revalidate = 60; // Cache for 1 minute
 
 export default async function EngineerProfile({ params }: { params: Promise<{ username: string }> }) {
   const { username } = await params;
-  const engineer = DEMO;
+  const supabase = await createClient();
+
+  // Get authenticated user
+  const { data: { user } } = await supabase.auth.getUser()
+  const isSelf = user?.user_metadata?.username === username
+  
+  let isCompany = false
+  if (user) {
+    const { data: company } = await supabase.from('companies').select('id').eq('id', user.id).single()
+    isCompany = !!company
+  }
+
+  // Fetch engineer profile
+  const { data: engineer, error } = await supabase
+    .from('engineers')
+    .select(`
+      *,
+      projects(*),
+      skill_badges(*)
+    `)
+    .eq('username', username)
+    .single();
+
+  if (error || !engineer) {
+    notFound();
+  }
+
+  const projects = engineer.projects || [];
+  const badges = engineer.skill_badges || [];
+
 
   return (
     <div className="page-container">
@@ -51,24 +62,82 @@ export default async function EngineerProfile({ params }: { params: Promise<{ us
           <p className="profile-bio">{engineer.bio}</p>
           <p className="profile-philosophy">&quot;{engineer.ai_philosophy}&quot;</p>
           <div style={{display:'flex',flexWrap:'wrap',gap:'0.5rem',marginBottom:'1rem'}}>
-            {engineer.ai_stack.map(s => <span key={s} className="stack-chip">{s}</span>)}
+            {(engineer.ai_stack || []).map((s: string) => <span key={s} className="stack-chip">{s}</span>)}
           </div>
           <div style={{display:'flex',flexWrap:'wrap',gap:'0.5rem',marginBottom:'1rem'}}>
-            {engineer.badges.map(b => <SkillBadge key={b.badge_type} badge_type={b.badge_type} verified={b.verified} />)}
+            {badges.map((b: any) => <SkillBadge key={b.badge_type} badge_type={b.badge_type} verified={b.verified} />)}
           </div>
           <div className="profile-links">
             {engineer.github_url && <a href={engineer.github_url} target="_blank" rel="noopener">GitHub</a>}
             {engineer.linkedin_url && <a href={engineer.linkedin_url} target="_blank" rel="noopener">LinkedIn</a>}
           </div>
         </div>
+        <aside style={{flex: 1}}>
+          {isSelf && (
+            <div className="card" style={{padding: '1.5rem', marginBottom: '1.5rem', border: '1px solid var(--primary)'}}>
+              <h3 style={{marginBottom: '0.5rem'}}>Your Profile</h3>
+              <p style={{fontSize: '0.85rem', color: 'var(--on-surface-variant)', marginBottom: '1rem'}}>
+                Keep your portfolio updated to maintain a high NeuronScore.
+              </p>
+              <Link href="/dashboard" className="btn-primary" style={{display: 'block', textAlign: 'center', textDecoration: 'none'}}>
+                Edit Portfolio
+              </Link>
+            </div>
+          )}
+
+          {isCompany && (
+            <div className="card" style={{padding: '1.5rem', marginBottom: '1.5rem', background: 'var(--primary-container)', border: '1px solid var(--primary)'}}>
+              <h3 style={{color: 'var(--primary)', marginBottom: '0.5rem'}}>Recruit Talent</h3>
+              <p style={{fontSize: '0.85rem', color: 'var(--on-surface-variant)', marginBottom: '1rem'}}>
+                Interested in working with {engineer.full_name || engineer.username}?
+              </p>
+              <button 
+                className="btn-primary" 
+                style={{width: '100%', marginBottom: '0.5rem'}}
+                onClick={() => alert(`Invitation sent to ${engineer.username}!`)}
+              >
+                Invite to Job
+              </button>
+              <button className="btn-secondary" style={{width: '100%'}}>Message</button>
+            </div>
+          )}
+
+          <div className="card" style={{padding: '1.5rem', marginBottom: '1.5rem'}}>
+            <h3 style={{marginBottom: '1rem'}}>NeuronScore™</h3>
+            <div style={{fontSize: '3rem', fontWeight: 800, color: 'var(--secondary)', textAlign: 'center'}}>
+              {engineer.neuron_score}
+            </div>
+            <p style={{textAlign: 'center', fontSize: '0.8rem', color: 'var(--on-surface-variant)', marginTop: '0.5rem'}}>
+              Ranking: Top 5% AI Talent
+            </p>
+          </div>
+
+          <div className="card" style={{padding: '1.5rem'}}>
+            <h3 style={{marginBottom: '1rem'}}>Details</h3>
+            <div style={{display: 'flex', flexDirection: 'column', gap: '1rem'}}>
+              <div>
+                <label style={{fontSize: '0.75rem', color: 'var(--on-surface-variant)', display: 'block'}}>LOCATION</label>
+                <div style={{fontWeight: 600}}>{engineer.location || 'Remote'}</div>
+              </div>
+              <div>
+                <label style={{fontSize: '0.75rem', color: 'var(--on-surface-variant)', display: 'block'}}>AVAILABILITY</label>
+                <div style={{fontWeight: 600, color: '#4CAF50'}}>{engineer.is_available ? 'Ready for Hire' : 'Busy'}</div>
+              </div>
+              <div>
+                <label style={{fontSize: '0.75rem', color: 'var(--on-surface-variant)', display: 'block'}}>RATE</label>
+                <div style={{fontWeight: 600}}>{engineer.hourly_rate_inr ? `${formatCurrency(engineer.hourly_rate_inr)} / hr` : 'Negotiable'}</div>
+              </div>
+            </div>
+          </div>
+        </aside>
       </div>
 
       <h2 className="section-title">Case Studies</h2>
-      {engineer.projects.map(p => (
+      {projects.map((p: any) => (
         <div key={p.title} className="project-case-study">
           <h3>{p.title}</h3>
           <div style={{display:'flex',flexWrap:'wrap',gap:'0.375rem',marginBottom:'1rem'}}>
-            {p.tech_stack.map(s => <span key={s} className="stack-chip stack-chip--sm">{s}</span>)}
+            {(p.tech_stack || []).map((s: string) => <span key={s} className="stack-chip stack-chip--sm">{s}</span>)}
           </div>
           <div className="case-study-section"><h4>Problem</h4><p>{p.problem}</p></div>
           <div className="case-study-section"><h4>Approach</h4><p>{p.approach}</p></div>

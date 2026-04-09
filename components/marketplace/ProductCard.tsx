@@ -1,4 +1,5 @@
-import { formatINR } from '@/lib/utils'
+import { formatCurrency } from '@/lib/utils'
+import RazorpayButton from '../payments/RazorpayButton'
 
 const CAT_COLORS: Record<string, string> = {
   agent: '#a855f7',
@@ -42,7 +43,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         <div className="product-card__meta">
           <span className="product-card__stars">{'★'.repeat(stars)}{'☆'.repeat(5 - stars)}</span>
           <span className="product-card__price">
-            {product.pricing_model === 'free' ? 'Free' : product.price_inr ? formatINR(product.price_inr) : 'Contact'}
+            {product.pricing_model === 'free' ? 'Free' : product.price_inr ? formatCurrency(product.price_inr) : 'Contact'}
           </span>
         </div>
         <div className="product-card__stack group-hover:opacity-100">
@@ -50,7 +51,11 @@ export default function ProductCard({ product }: ProductCardProps) {
         </div>
         <div className="product-card__actions">
           {product.demo_url && <button className="btn-secondary">Try Demo</button>}
-          <button className="btn-primary">Buy Now</button>
+          {product.pricing_model !== 'free' && product.price_inr ? (
+            <div style={{ flex: 1 }}><RazorpayButton amountINR={product.price_inr} buttonText="Buy Now" /></div>
+          ) : (
+            <button className="btn-primary" style={{ flex: 1 }}>Get Code</button>
+          )}
         </div>
       </div>
     </div>
