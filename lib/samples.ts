@@ -90,3 +90,54 @@ export const SAMPLE_JOBS = [
     }
   }
 ]
+
+export const SAMPLE_PRODUCTS = [
+  {
+    id: 'sample-product-1',
+    title: 'VectorHub Core',
+    description: 'A high-performance semantic search engine optimized for low-latency RAG. Includes auto-quantization and hybrid search out of the box.',
+    category: 'Model',
+    price_inr: 4500,
+    price_type: 'One-time',
+    rating: 4.9,
+    reviews_count: 124,
+    tags: ['RAG', 'Vector DB', 'Search'],
+    engineer: {
+      full_name: 'Ayush Sharma',
+      username: 'ayush_ai',
+      avatar_url: null
+    }
+  },
+  {
+    id: 'sample-product-2',
+    title: 'SupportAgent Alpha',
+    description: 'Autonomous customer support agent with deep integration for Zendesk and Intercom. Achieves 80% automated resolution rate.',
+    category: 'Agent',
+    price_inr: 12000,
+    price_type: 'Monthly',
+    rating: 4.7,
+    reviews_count: 89,
+    tags: ['Agentic', 'Automation', 'NLP'],
+    engineer: {
+      full_name: 'Priya AI',
+      username: 'priya_dev',
+      avatar_url: null
+    }
+  },
+  {
+    id: 'sample-product-3',
+    title: 'CleanTech Dataset v2',
+    description: 'Verified dataset of 500,000+ labeled images for solar panel efficiency audits and waste management classification.',
+    category: 'Dataset',
+    price_inr: 8000,
+    price_type: 'One-time',
+    rating: 5.0,
+    reviews_count: 42,
+    tags: ['CV', 'Dataset', 'Sustainability'],
+    engineer: {
+      full_name: 'Vikram Singh',
+      username: 'vik_vision',
+      avatar_url: null
+    }
+  }
+]

@@ -53,8 +53,8 @@ export default async function JobDetailPage({ params }: { params: Promise<{ id: 
         </Link>
       </div>
 
-      <div className="sidebar-layout">
-        <div style={{flex: 2}}>
+      <div className="detail-layout">
+        <div>
           <div className="glass-card" style={{padding: '3rem'}}>
             <div style={{display: 'flex', alignItems: 'flex-start', gap: '1.5rem', marginBottom: '3rem'}}>
               {job.company.logo_url ? (
@@ -121,7 +121,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ id: 
           </div>
         </div>
 
-        <aside style={{flex: 1}}>
+        <aside>
           <div className="glass-card" style={{padding: '2rem', position: 'sticky', top: '7rem'}}>
             {isOwner ? (
               <>

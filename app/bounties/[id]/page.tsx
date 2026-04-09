@@ -53,8 +53,8 @@ export default async function BountyDetailPage({ params }: { params: Promise<{ i
         </Link>
       </div>
 
-      <div className="sidebar-layout">
-        <div style={{flex: 2}}>
+      <div className="detail-layout">
+        <div>
           <div className="glass-card" style={{padding: '3rem'}}>
             <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '3rem'}}>
               <div>
@@ -121,7 +121,7 @@ export default async function BountyDetailPage({ params }: { params: Promise<{ i
           </div>
         </div>
 
-        <aside style={{flex: 1}}>
+        <aside>
           <div className="glass-card" style={{padding: '2rem', position: 'sticky', top: '7rem'}}>
             {bounty.status === 'open' && !isExpired ? (
               isEngineer ? (
