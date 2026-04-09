@@ -2,6 +2,8 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
+import { sendEmail } from '@/lib/email/resend'
+import { CONTRACT_STARTED_TEMPLATE } from '@/lib/email/templates'
 
 export async function acceptProposal(proposalId: string) {
   const supabase = await createClient()
@@ -12,7 +14,7 @@ export async function acceptProposal(proposalId: string) {
   // 1. Fetch proposal and check if current user is the company owner
   const { data: proposal, error: pError } = await supabase
     .from('proposals')
-    .select('*, job:job_postings!inner(company_id)')
+    .select('*, job:job_postings!inner(title, company_id), engineer:engineers(email, full_name, username)')
     .eq('id', proposalId)
     .single()
 
@@ -41,11 +43,19 @@ export async function acceptProposal(proposalId: string) {
 
   if (contractError) {
       console.error('Contract creation error:', contractError)
-      // We don't necessarily roll back the proposal update in this MVP, but we log the error
   }
 
   // 4. Update job status to in_progress
   await supabase.from('job_postings').update({ status: 'in_progress' }).eq('id', proposal.job_id)
+
+  // 5. SEND NOTIFICATION (Non-blocking)
+  if (proposal.engineer?.email) {
+    sendEmail({
+      to: proposal.engineer.email,
+      subject: `Project Started: ${proposal.job.title}`,
+      html: CONTRACT_STARTED_TEMPLATE(proposal.engineer.full_name || proposal.engineer.username, proposal.job.title)
+    }).catch(console.error)
+  }
 
   revalidatePath('/dashboard')
   revalidatePath(`/jobs/${proposal.job_id}`)

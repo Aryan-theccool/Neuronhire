@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { CompanyForms } from '@/components/dashboard/CompanyForms'
 import { EngineerForms } from '@/components/dashboard/EngineerForms'
+import NotificationCenter from '@/components/notifications/NotificationCenter'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
