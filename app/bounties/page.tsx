@@ -12,8 +12,15 @@ export default async function BountiesPage() {
     .select('*, company:companies(company_name, logo_url)')
     .order('created_at', { ascending: false })
 
-  // Inject samples if DB is empty for demo "Wow" factor
-  const displayBounties = (dbBounties && dbBounties.length > 0) ? dbBounties : SAMPLE_BOUNTIES;
+  if (error) {
+    console.error('Bounty Board Fetch Error:', error.message, error.details)
+  }
+
+  // Hybrid Feed: Mix real bounties with premium samples
+  const displayBounties = [
+    ...(dbBounties || []),
+    ...SAMPLE_BOUNTIES
+  ].slice(0, 8);
 
   return (
     <div className="page-container">

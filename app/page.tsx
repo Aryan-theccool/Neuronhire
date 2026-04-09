@@ -1,4 +1,3 @@
-
 import Link from 'next/link'
 import EngineerProfileCard from '@/components/profile/EngineerProfileCard'
 import JobCard from '@/components/hiring/JobCard'
@@ -15,13 +14,18 @@ export default async function Home() {
     { data: engineers },
     { data: jobs },
     { data: bounties },
-    { data: products }
+    { data: products },
+    { data: session }
   ] = await Promise.all([
     supabase.from('engineers').select('*').limit(3),
     supabase.from('job_postings').select('*, company:companies(company_name, logo_url)').limit(2).order('created_at', { ascending: false }),
     supabase.from('bounties').select('*, company:companies(company_name, logo_url)').limit(2).order('created_at', { ascending: false }),
-    supabase.from('marketplace_products').select('*, engineer:engineers(full_name, avatar_url, username)').limit(3).order('created_at', { ascending: false })
+    supabase.from('marketplace_products').select('*, engineer:engineers(full_name, avatar_url, username)').limit(3).order('created_at', { ascending: false }),
+    supabase.auth.getUser()
   ]);
+
+  const user = session?.user;
+  const role = user?.user_metadata?.role || 'engineer';
 
   const displayEngineers = engineers || [];
   const displayJobs = jobs || [];
@@ -34,8 +38,21 @@ export default async function Home() {
         <h1>{"India's Premier AI Talent & Marketplace"}</h1>
         <p>Build. Be Found. Get Paid. Build Again. The platform where elite AI engineers meet world-class companies.</p>
         <div className="hero__actions">
-          <Link href="/signup" className="btn-primary" style={{padding: '0.75rem 2rem', fontSize: '1rem'}}>Join as Engineer</Link>
-          <Link href="/signup" className="btn-secondary" style={{padding: '0.75rem 2rem', fontSize: '1rem'}}>Hire AI Talent</Link>
+          {user ? (
+            <>
+              <Link href="/dashboard" className="btn-primary" style={{padding: '0.75rem 2rem', fontSize: '1rem'}}>
+                {role === 'company' ? 'My Company Dashboard' : 'My Engineer Dashboard'}
+              </Link>
+              <Link href="/jobs" className="btn-secondary" style={{padding: '0.75rem 2rem', fontSize: '1rem'}}>
+                {role === 'company' ? 'Manage Opportunities' : 'Explore Opportunities'}
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link href="/signup" className="btn-primary" style={{padding: '0.75rem 2rem', fontSize: '1rem'}}>Join as Engineer</Link>
+              <Link href="/signup" className="btn-secondary" style={{padding: '0.75rem 2rem', fontSize: '1rem'}}>Hire AI Talent</Link>
+            </>
+          )}
         </div>
       </section>
 

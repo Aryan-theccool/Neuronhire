@@ -13,8 +13,15 @@ export default async function MarketplacePage() {
     .select('*, engineer:engineers(full_name, avatar_url, username)')
     .order('created_at', { ascending: false })
 
-  // Inject samples if DB is empty for demo "Wow" factor
-  const displayProducts = (dbProducts && dbProducts.length > 0) ? dbProducts : SAMPLE_PRODUCTS;
+  if (error) {
+    console.error('Marketplace Fetch Error:', error.message, error.details)
+  }
+
+  // Hybrid Feed: Mix real products with premium samples
+  const displayProducts = [
+    ...(dbProducts || []),
+    ...SAMPLE_PRODUCTS
+  ].slice(0, 9);
 
   return (
     <div className="page-container" style={{ paddingTop: '3rem' }}>

@@ -13,8 +13,15 @@ export default async function JobsPage() {
     .select('*, company:companies(company_name, logo_url)')
     .order('created_at', { ascending: false })
 
-  // Inject samples if DB is empty for demo "Wow" factor
-  const displayJobs = (dbJobs && dbJobs.length > 0) ? dbJobs : SAMPLE_JOBS;
+  if (error) {
+    console.error('Job Board Fetch Error:', error.message, error.details)
+  }
+
+  // Hybrid Feed: Mix real data (at top) with premium samples
+  const displayJobs = [
+    ...(dbJobs || []),
+    ...SAMPLE_JOBS
+  ].slice(0, 8); // Keep the board clean but full
 
   return (
     <div className="page-container">

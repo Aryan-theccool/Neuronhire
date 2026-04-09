@@ -25,7 +25,7 @@ export function EngineerForms({ profile, projects, proposals, contracts }: Engin
     const formData = new FormData(e.currentTarget)
     const res = await publishProduct(formData)
     setLoading(false)
-    if (res.error) setMessage('Error: ' + res.error)
+    if ('error' in res) setMessage('Error: ' + res.error)
     else {
       setMessage('Product published to Marketplace!')
       e.currentTarget.reset()
