@@ -14,23 +14,61 @@ export default async function DashboardPage() {
   const role = user.user_metadata?.role || 'engineer'
   let profile = null;
   let projects: any[] = [];
+  let proposals: any[] = [];
+  let contracts: any[] = [];
 
   if (role === 'company') {
     const { data } = await supabase.from('companies').select('*').eq('id', user.id).single()
     profile = data
+    
+    // Fetch proposals for jobs owned by company
+    const { data: propData } = await supabase
+      .from('proposals')
+      .select('*, job:job_postings!inner(title, company_id), engineer:engineers(username, full_name, neuron_score)')
+      .eq('job.company_id', user.id)
+    proposals = propData || []
+
+    const { data: contData } = await supabase
+      .from('contracts')
+      .select('*, job:job_postings(title), engineer:engineers(username, full_name)')
+      .eq('company_id', user.id)
+    contracts = contData || []
+
   } else {
     const { data: pData } = await supabase.from('engineers').select('*').eq('id', user.id).single()
     profile = pData
+    
     const { data: projData } = await supabase.from('projects').select('*').eq('engineer_id', user.id).order('created_at', { ascending: false })
     projects = projData || []
+
+    // Fetch athlete's own applications
+    const { data: propData } = await supabase
+      .from('proposals')
+      .select('*, job:job_postings(title, company:companies(company_name))')
+      .eq('engineer_id', user.id)
+    proposals = propData || []
+
+    const { data: contData } = await supabase
+      .from('contracts')
+      .select('*, job:job_postings(title), company:companies(company_name)')
+      .eq('engineer_id', user.id)
+    contracts = contData || []
   }
 
   return (
     <div className="page-container">
       <div className="page-header">
-        <h1>Welcome to your Dashboard</h1>
-        <p>Logged in as: {user.email}</p>
-        <p style={{color: 'var(--primary)'}}>Role: {role.charAt(0).toUpperCase() + role.slice(1)}</p>
+        <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+          <div>
+            <h1>Welcome to your Dashboard</h1>
+            <p>Logged in as: {user.email}</p>
+            <p style={{color: 'var(--primary)'}}>Role: {role.charAt(0).toUpperCase() + role.slice(1)}</p>
+          </div>
+          <div style={{display: 'flex', gap: '1rem'}}>
+             <NotificationCenter />
+             <button className="btn-secondary">Settings</button>
+          </div>
+        </div>
       </div>
 
       <div className="grid-2">
@@ -51,7 +89,11 @@ export default async function DashboardPage() {
 
         {/* Action Panel based on Role */}
         <div style={{gridColumn: '1 / -1', marginTop: '2rem'}}>
-            {role === 'company' ? <CompanyForms /> : <EngineerForms profile={profile} projects={projects} />}
+            {role === 'company' ? (
+              <CompanyForms profile={profile} proposals={proposals} contracts={contracts} />
+             ) : (
+              <EngineerForms profile={profile} projects={projects} proposals={proposals} contracts={contracts} />
+            )}
         </div>
       </div>
     </div>
