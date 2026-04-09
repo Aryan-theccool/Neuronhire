@@ -22,65 +22,75 @@ export function ProposalList({ proposals, role }: ProposalListProps) {
   }
 
   return (
-    <div className="stat-card">
-      <h3 style={{marginBottom: '1.5rem'}}>{role === 'company' ? 'Review Candidates' : 'My Applications'}</h3>
-      <div style={{display: 'flex', flexDirection: 'column', gap: '1rem'}}>
+    <div className="glass-card" style={{padding: '2rem'}}>
+      <div className="form-section-title" style={{marginBottom: '2rem'}}>
+        {role === 'company' ? 'Talent Pipelines' : 'Active Applications'}
+      </div>
+      <div style={{display: 'flex', flexDirection: 'column', gap: '1.25rem'}}>
         {proposals.map(p => (
           <div key={p.id} style={{
-            padding: '1rem', 
+            padding: '1.25rem', 
+            background: 'var(--surface-container-low)',
             border: '1px solid var(--outline-variant)', 
-            borderRadius: '8px',
+            borderRadius: 'var(--radius-lg)',
             display: 'flex',
             justifyContent: 'space-between',
-            alignItems: 'center'
-          }}>
+            alignItems: 'center',
+            transition: 'all 0.2s ease'
+          }} className="hover:border-primary">
             <div>
-              <p style={{fontWeight: 600}}>
+              <p style={{fontWeight: 700, fontSize: '1rem', color: 'var(--on-surface)'}}>
                 {role === 'company' ? (p.engineer?.full_name || p.engineer?.username) : p.job?.title}
               </p>
-              <p style={{fontSize: '0.85rem', color: 'var(--on-surface-variant)'}}>
-                {role === 'company' ? `Applied for: ${p.job?.title}` : `Company: ${p.job?.company?.company_name}`}
+              <p style={{fontSize: '0.85rem', color: 'var(--on-surface-variant)', marginTop: '0.25rem'}}>
+                {role === 'company' ? `Role: ${p.job?.title}` : `Agency: ${p.job?.company?.company_name}`}
               </p>
-              <div style={{display: 'flex', gap: '0.5rem', marginTop: '0.5rem'}}>
-                <span className="status-badge" style={{
-                  background: p.status === 'accepted' ? '#4CAF50' : p.status === 'pending' ? '#FF9800' : '#F44336',
-                  color: '#fff',
-                  fontSize: '0.7rem',
-                  padding: '0.1rem 0.4rem',
-                  borderRadius: '1rem',
+              <div style={{display: 'flex', gap: '1rem', alignItems: 'center', marginTop: '0.75rem'}}>
+                <span style={{
+                  background: p.status === 'accepted' ? 'rgba(16, 185, 129, 0.15)' : p.status === 'pending' ? 'rgba(245, 158, 11, 0.15)' : 'rgba(239, 68, 68, 0.15)',
+                  color: p.status === 'accepted' ? 'var(--success)' : p.status === 'pending' ? 'var(--warning)' : 'var(--error)',
+                  fontSize: '0.65rem',
+                  padding: '0.25rem 0.6rem',
+                  borderRadius: 'var(--radius-sm)',
                   textTransform: 'uppercase',
-                  fontWeight: 600
+                  fontWeight: 800,
+                  letterSpacing: '0.05em',
+                  border: `1px solid ${p.status === 'accepted' ? 'rgba(16, 185, 129, 0.2)' : p.status === 'pending' ? 'rgba(245, 158, 11, 0.2)' : 'rgba(239, 68, 68, 0.2)'}`
                 }}>
                   {p.status}
                 </span>
                 {role === 'company' && (
-                  <span style={{fontSize: '0.75rem', color: 'var(--secondary)'}}>NS: {p.engineer?.neuron_score}</span>
+                  <span className="neuron-req">NeuronScore: {p.engineer?.neuron_score}</span>
                 )}
               </div>
             </div>
 
-            <div style={{display: 'flex', gap: '0.75rem', alignItems: 'center'}}>
+            <div style={{display: 'flex', gap: '1rem', alignItems: 'center'}}>
               {role === 'company' && p.status === 'pending' && (
                 <button 
                   className="btn-primary" 
-                  style={{fontSize: '0.8rem', padding: '0.4rem 1rem'}}
+                  style={{fontSize: '0.75rem', padding: '0.5rem 1.25rem'}}
                   onClick={() => handleAccept(p.id)}
                   disabled={!!loading}
                 >
-                  {loading === p.id ? 'Hiring...' : 'Accept & Hire'}
+                  {loading === p.id ? 'Starting...' : 'Accept & Hire'}
                 </button>
               )}
               <Link 
                 href={role === 'company' ? `/engineer/${p.engineer?.username}` : `/jobs/${p.job_id}`}
-                className="nav__link" 
-                style={{fontSize: '0.85rem'}}
+                className="btn-secondary" 
+                style={{fontSize: '0.75rem', padding: '0.5rem 1rem'}}
               >
-                View Details
+                Profile Details
               </Link>
             </div>
           </div>
         ))}
-        {proposals.length === 0 && <p style={{textAlign: 'center', color: 'var(--on-surface-variant)'}}>No active proposals found.</p>}
+        {proposals.length === 0 && (
+          <div style={{textAlign: 'center', padding: '3rem', color: 'var(--on-surface-variant)', border: '1px dashed var(--outline-variant)', borderRadius: 'var(--radius-lg)'}}>
+            No active proposals in this pipeline.
+          </div>
+        )}
       </div>
     </div>
   )

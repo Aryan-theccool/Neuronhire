@@ -34,27 +34,24 @@ export function EngineerForms({ profile, projects, proposals, contracts }: Engin
 
   return (
     <div style={{display: 'flex', flexDirection: 'column', gap: '2rem'}}>
-      <div className="tabs" style={{display: 'flex', gap: '1rem', borderBottom: '1px solid var(--outline-variant)', paddingBottom: '1rem'}}>
+      <div className="tabs" style={{display: 'flex', gap: '0.5rem'}}>
         <button 
           onClick={() => setActiveTab('portfolio')}
-          className={activeTab === 'portfolio' ? 'nav__link active' : 'nav__link'}
-          style={{fontWeight: activeTab === 'portfolio' ? 700 : 400}}
+          className={`tab-btn ${activeTab === 'portfolio' ? 'tab-btn--active' : ''}`}
         >
           My Portfolio
         </button>
         <button 
           onClick={() => setActiveTab('career')}
-          className={activeTab === 'career' ? 'nav__link active' : 'nav__link'}
-          style={{fontWeight: activeTab === 'career' ? 700 : 400}}
+          className={`tab-btn ${activeTab === 'career' ? 'tab-btn--active' : ''}`}
         >
-          Active Work & Applications
+          Active Work
         </button>
         <button 
           onClick={() => setActiveTab('marketplace')}
-          className={activeTab === 'marketplace' ? 'nav__link active' : 'nav__link'}
-          style={{fontWeight: activeTab === 'marketplace' ? 700 : 400}}
+          className={`tab-btn ${activeTab === 'marketplace' ? 'tab-btn--active' : ''}`}
         >
-          Monetize AI
+          Monetize
         </button>
       </div>
 
@@ -73,43 +70,66 @@ export function EngineerForms({ profile, projects, proposals, contracts }: Engin
         )}
         
         {activeTab === 'marketplace' && (
-          <div className="stat-card" style={{borderTop: '1px solid var(--outline-variant)', paddingTop: '1rem'}}>
-            <h3>Publish AI Product to Marketplace</h3>
-            <p style={{color: 'var(--on-surface-variant)', fontSize: '0.9rem', marginBottom: '1.5rem'}}>
-              Sell your pre-trained models, agent workflows, datasets, or SaaS tools directly to buyers.
+          <div className="glass-card">
+            <h2 style={{fontSize: '1.75rem', marginBottom: '1.5rem'}}>Monetize AI Assets</h2>
+            <p style={{color: 'var(--on-surface-variant)', fontSize: '0.9rem', marginBottom: '2rem'}}>
+              Sell your models, agents, and datasets directly to the NeuronHire community.
             </p>
 
-            <form onSubmit={handleSubmit} style={{display: 'flex', flexDirection: 'column', gap: '1rem'}}>
-              <div style={{display: 'flex', gap: '1rem'}}>
-                <input name="name" placeholder="Product Name (e.g. MedRAG Starter Kit)" required className="modern-input" style={{flex: 2}} />
-                <select name="category" className="modern-input" style={{flex: 1}}>
-                  <option value="agent">AI Agent</option>
-                  <option value="model">Fine-Tuned Model</option>
-                  <option value="saas">SaaS Application</option>
-                  <option value="workflow">Workflow/Pipeline</option>
-                  <option value="dataset">Dataset</option>
-                  <option value="template">Code Template</option>
-                </select>
+            <form onSubmit={handleSubmit} className="form-section">
+              <div className="form-section-title">Product Details</div>
+              
+              <div className="grid-2" style={{gap: '1.5rem'}}>
+                <div className="form-group">
+                  <label className="form-label">Product Name</label>
+                  <input name="name" placeholder="e.g. MedRAG Starter Kit" required className="modern-input" />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Category</label>
+                  <select name="category" className="form-select">
+                    <option value="agent">AI Agent</option>
+                    <option value="model">Fine-Tuned Model</option>
+                    <option value="saas">SaaS Application</option>
+                    <option value="workflow">Workflow/Pipeline</option>
+                    <option value="dataset">Dataset</option>
+                    <option value="template">Code Template</option>
+                  </select>
+                </div>
               </div>
               
-              <textarea name="description" placeholder="Describe your product's capabilities..." rows={3} required className="modern-input" />
+              <div className="form-group">
+                <label className="form-label">Description</label>
+                <textarea name="description" placeholder="Describe your product's capabilities..." rows={3} required className="form-textarea" />
+              </div>
               
-              <div style={{display: 'flex', gap: '1rem'}}>
-                <select name="pricing_model" className="modern-input" style={{flex: 1}}>
-                  <option value="one_time">One-time Purchase</option>
-                  <option value="monthly">Monthly Subscription</option>
-                  <option value="free">Free / Open Source</option>
-                </select>
-                <input type="number" name="price_inr" placeholder="Price (INR)" className="modern-input" style={{flex: 1}} />
+              <div className="grid-2" style={{gap: '1.5rem'}}>
+                <div className="form-group">
+                  <label className="form-label">Pricing Model</label>
+                  <select name="pricing_model" className="form-select">
+                    <option value="one_time">One-time Purchase</option>
+                    <option value="monthly">Monthly Subscription</option>
+                    <option value="free">Free / Open Source</option>
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Price (INR)</label>
+                  <input type="number" name="price_inr" placeholder="Enter amount" className="modern-input" />
+                </div>
               </div>
 
-              <div style={{display: 'flex', gap: '1rem'}}>
-                <input name="demo_url" placeholder="Demo URL (Optional)" className="modern-input" style={{flex: 1}} />
-                <input name="tech_stack" placeholder="Tech Stack (comma separated)" className="modern-input" style={{flex: 1}} />
+              <div className="grid-2" style={{gap: '1.5rem'}}>
+                <div className="form-group">
+                  <label className="form-label">Demo URL</label>
+                  <input name="demo_url" placeholder="https://..." className="modern-input" />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Tech Stack</label>
+                  <input name="tech_stack" placeholder="Python, LlamaIndex, etc." className="modern-input" />
+                </div>
               </div>
               
-              <button type="submit" className="btn-primary" disabled={loading}>
-                {loading ? 'Publishing...' : 'Publish Product'}
+              <button type="submit" className="btn-primary" style={{width: '100%', padding: '1rem'}}>
+                {loading ? 'Publishing...' : 'Publish to Marketplace'}
               </button>
             </form>
           </div>

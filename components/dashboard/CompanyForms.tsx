@@ -32,53 +32,79 @@ export function CompanyForms({ profile, proposals, contracts }: CompanyFormsProp
 
   return (
     <div style={{display: 'flex', flexDirection: 'column', gap: '2rem'}}>
-      <div className="tabs" style={{display: 'flex', gap: '1rem', borderBottom: '1px solid var(--outline-variant)', paddingBottom: '1rem'}}>
+      <div className="tabs" style={{display: 'flex', gap: '0.5rem'}}>
         <button 
           onClick={() => setActiveTab('hiring')}
-          className={activeTab === 'hiring' ? 'nav__link active' : 'nav__link'}
-          style={{fontWeight: activeTab === 'hiring' ? 700 : 400}}
+          className={`tab-btn ${activeTab === 'hiring' ? 'tab-btn--active' : ''}`}
         >
           Hiring & Bounties
         </button>
         <button 
           onClick={() => setActiveTab('work')}
-          className={activeTab === 'work' ? 'nav__link active' : 'nav__link'}
-          style={{fontWeight: activeTab === 'work' ? 700 : 400}}
+          className={`tab-btn ${activeTab === 'work' ? 'tab-btn--active' : ''}`}
         >
-          Manage Work ({contracts.length})
+          Active Contracts ({contracts.length})
         </button>
       </div>
 
       {message && <div style={{padding: '1rem', background: 'var(--primary-container)', color: 'var(--primary)', borderRadius: '4px'}}>{message}</div>}
       
       {activeTab === 'hiring' ? (
-        <>
+        <div style={{display: 'flex', flexDirection: 'column', gap: '3rem'}}>
           <ProposalList proposals={proposals} role="company" />
           
-          <div className="stat-card">
-            <h3>Post a New AI Job</h3>
-            <form onSubmit={handleJobSubmit} style={{display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem'}}>
-              <input name="title" placeholder="Job Title (e.g. Lead Generative AI Engineer)" required className="modern-input" />
-              <textarea name="description" placeholder="Job Description..." rows={3} required className="modern-input" />
-              <div style={{display: 'flex', gap: '1rem'}}>
-                <select name="engagement_type" className="modern-input" style={{flex: 1}}>
-                  <option value="fulltime">Full-time</option>
-                  <option value="internship">Internship</option>
-                  <option value="hourly">Hourly Contract</option>
-                  <option value="project">Project-based</option>
-                </select>
-                <input name="skills_required" placeholder="Skills (comma separated)" className="modern-input" style={{flex: 1}} />
+          <div className="glass-card">
+            <h2 style={{fontSize: '1.75rem', marginBottom: '1.5rem'}}>Post a New AI Role</h2>
+            <p style={{color: 'var(--on-surface-variant)', fontSize: '0.9rem', marginBottom: '2rem'}}>
+              Recruit specialized AI talent for your next breakthrough project.
+            </p>
+
+            <form onSubmit={handleJobSubmit} className="form-section">
+              <div className="form-section-title">Job Details</div>
+              
+              <div className="form-group">
+                <label className="form-label">Job Title</label>
+                <input name="title" placeholder="e.g. Lead Generative AI Engineer" required className="modern-input" />
               </div>
-              <div style={{display: 'flex', gap: '1rem'}}>
-                <input type="number" name="budget_min_inr" placeholder="Min Budget (INR)" className="modern-input" style={{flex: 1}} />
-                <input type="number" name="budget_max_inr" placeholder="Max Budget (INR)" className="modern-input" style={{flex: 1}} />
+              
+              <div className="form-group">
+                <label className="form-label">Description</label>
+                <textarea name="description" placeholder="What will this person build?" rows={3} required className="form-textarea" />
               </div>
-              <button type="submit" className="btn-primary" disabled={loading}>
-                {loading ? 'Posting...' : 'Post Job'}
+              
+              <div className="grid-2" style={{gap: '1.5rem'}}>
+                <div className="form-group">
+                  <label className="form-label">Engagement Type</label>
+                  <select name="engagement_type" className="form-select">
+                    <option value="fulltime">Full-time</option>
+                    <option value="internship">Internship</option>
+                    <option value="hourly">Hourly Contract</option>
+                    <option value="project">Project-based</option>
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Skills Required</label>
+                  <input name="skills_required" placeholder="Python, OpenAI, PyTorch..." className="modern-input" />
+                </div>
+              </div>
+              
+              <div className="grid-2" style={{gap: '1.5rem'}}>
+                <div className="form-group">
+                  <label className="form-label">Min Budget (INR)</label>
+                  <input type="number" name="budget_min_inr" placeholder="0" className="modern-input" />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Max Budget (INR)</label>
+                  <input type="number" name="budget_max_inr" placeholder="Max" className="modern-input" />
+                </div>
+              </div>
+              
+              <button type="submit" className="btn-primary" style={{width: '100%', padding: '1rem'}}>
+                {loading ? 'Posting...' : 'Post Job Opening'}
               </button>
             </form>
           </div>
-        </>
+        </div>
       ) : (
         <ContractList contracts={contracts} role="company" />
       )}
