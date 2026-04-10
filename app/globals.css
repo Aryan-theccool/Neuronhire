@@ -605,15 +605,17 @@ input:checked + .slider:before { transform: translateX(14px); }
 }
 
 .bento-card {
-  padding: 2.5rem;
+  padding: 3rem 2.5rem;
   background: rgba(31, 32, 34, 0.4);
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: var(--radius-xl);
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  align-items: center; /* Centered content */
+  text-align: center;   /* Centered typography */
+  gap: 1.25rem;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .bento-card:hover {
