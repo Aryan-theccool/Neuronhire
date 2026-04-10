@@ -144,22 +144,22 @@ a:hover { color: var(--primary-container); }
 .metric-pill {
   display: inline-flex; align-items: center; gap: 0.5rem;
   padding: 0.5rem 1rem;
-  background: rgba(168, 85, 247, 0.2);
+  background: rgba(173, 198, 255, 0.08);
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(168, 85, 247, 0.3);
+  border: 1px solid rgba(173, 198, 255, 0.15);
   border-radius: 999px;
   color: var(--primary);
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 0.85rem;
-  box-shadow: 0 0 20px rgba(168, 85, 247, 0.2);
+  box-shadow: 0 0 20px rgba(173, 198, 255, 0.1);
 }
 
 .glass-badge {
   padding: 0.25rem 0.75rem;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-sm);
   font-size: 0.65rem;
   font-weight: 700;
@@ -167,9 +167,9 @@ a:hover { color: var(--primary-container); }
   color: #fff;
 }
 
-.glass-badge--featured { background: rgba(168, 85, 247, 0.3); border-color: rgba(168, 85, 247, 0.5); }
-.glass-badge--demo { background: rgba(52, 181, 250, 0.3); border-color: rgba(52, 181, 250, 0.5); }
-.glass-badge--available { background: rgba(16, 185, 129, 0.3); border-color: rgba(16, 185, 129, 0.5); }
+.glass-badge--featured { background: rgba(173, 198, 255, 0.15); border-color: rgba(173, 198, 255, 0.25); }
+.glass-badge--demo { background: rgba(52, 181, 250, 0.15); border-color: rgba(52, 181, 250, 0.25); }
+.glass-badge--available { background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.25); }
 
 .filter-toggle {
   display: flex; align-items: center; justify-content: space-between;
@@ -257,8 +257,8 @@ input:checked + .slider:before { transform: translateX(14px); }
 }
 .job-card:hover {
   background: var(--surface-container-high);
-  box-shadow: 0 24px 48px rgba(0,0,0,0.3), 0 0 12px rgba(204,151,255,0.05);
-  transform: translateY(-2px);
+  box-shadow: 0 32px 64px rgba(0,0,0,0.5), 0 0 20px rgba(173, 198, 255, 0.1);
+  border-color: rgba(173, 198, 255, 0.2);
 }
 .job-card__top { display: flex; align-items: center; gap: 0.5rem; }
 .job-card__title { font-size: 1.1rem; color: var(--on-surface); }

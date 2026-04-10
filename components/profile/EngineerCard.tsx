@@ -125,8 +125,8 @@ export default function EngineerCard({ engineer }: EngineerCardProps) {
         .engineer-card-premium:hover {
           transform: translateY(-4px); 
           background: var(--surface-container-high);
-          box-shadow: 0 32px 64px rgba(0,0,0,0.5), 0 0 20px rgba(168, 85, 247, 0.1);
-          border-color: rgba(168, 85, 247, 0.2);
+          box-shadow: 0 32px 64px rgba(0,0,0,0.5), 0 0 20px rgba(173, 198, 255, 0.1);
+          border-color: rgba(173, 198, 255, 0.2);
         }
         .card-banner {
           height: 160px; background-size: cover; background-position: center;
