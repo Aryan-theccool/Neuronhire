@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { formatCurrency } from '@/lib/utils'
+import HireButtons from '@/components/profile/HireButtons'
 
 export const revalidate = 60; // Cache for 1 minute
 
@@ -91,14 +92,7 @@ export default async function EngineerProfile({ params }: { params: Promise<{ us
               <p style={{fontSize: '0.85rem', color: 'var(--on-surface-variant)', marginBottom: '1rem'}}>
                 Interested in working with {engineer.full_name || engineer.username}?
               </p>
-              <button 
-                className="btn-primary" 
-                style={{width: '100%', marginBottom: '0.5rem'}}
-                onClick={() => alert(`Invitation sent to ${engineer.username}!`)}
-              >
-                Invite to Job
-              </button>
-              <button className="btn-secondary" style={{width: '100%'}}>Message</button>
+              <HireButtons username={engineer.username} />
             </div>
           )}
 

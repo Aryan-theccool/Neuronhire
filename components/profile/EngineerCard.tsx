@@ -1,5 +1,7 @@
+'use client'
+
 import Link from 'next/link'
-import { getImpactMetric, getProjectImage } from '@/lib/utils/metrics'
+import { getImpactMetric, getProjectImage, getDeterministicRate, getDeterministicProjects, getDeterministicRating } from '@/lib/utils/metrics'
 
 interface EngineerCardProps {
   engineer: {
@@ -23,12 +25,12 @@ export default function EngineerCard({ engineer }: EngineerCardProps) {
   const metric = getImpactMetric(engineer.username)
   const bgImage = getProjectImage(engineer.username)
   
-  // Mock data for premium feel
-  const rate = engineer.hourly_rate || (Math.floor(Math.random() * 100) + 50)
+  // Deterministic data for premium feel (prevents hydration mismatch)
+  const rate = engineer.hourly_rate || getDeterministicRate(engineer.username)
   const location = engineer.location || "Bangalore, India"
   const timezone = engineer.timezone || "IST"
-  const rating = engineer.rating || (4 + Math.random()).toFixed(1)
-  const projects = engineer.projects_count || Math.floor(Math.random() * 50) + 10
+  const rating = engineer.rating || getDeterministicRating(engineer.username)
+  const projects = engineer.projects_count || getDeterministicProjects(engineer.username)
   const successRate = engineer.success_rate || 100
 
   return (

@@ -26,3 +26,18 @@ export function getProjectImage(id: string) {
   const index = id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
   return PROJECT_IMAGES[index % PROJECT_IMAGES.length];
 }
+
+export function getDeterministicRate(id: string) {
+  const index = id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  return 50 + (index % 100); // Between 50 and 150
+}
+
+export function getDeterministicProjects(id: string) {
+  const index = id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  return 10 + (index % 50); // Between 10 and 60
+}
+
+export function getDeterministicRating(id: string) {
+  const index = id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  return (4.0 + (index % 11) / 10).toFixed(1); // Between 4.0 and 5.0
+}
