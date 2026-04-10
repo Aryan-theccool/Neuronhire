@@ -1,36 +1,76 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🧠 NeuronHire: The Specialized AI Talent Marketplace
 
-## Getting Started
+![NeuronHire Banner](https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=1200&h=400)
 
-First, run the development server:
+NeuronHire is a premium, managed ecosystem designed to connect elite AI Engineering talent with the world's most innovative companies. Built for the move towards an AI-first economy, it transcends traditional job boards by focusing on verified technical depth and product IP.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🚀 Key Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 1. Self-Healing Infrastructure
+Our proprietary **Self-Healing Profile System** eliminates the friction of broken user states. The platform automatically initializes database profiles for Auth users on-the-fly, ensuring a 100% success rate for job and bounty publications.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 2. The Hybrid Feed Engine
+A sophisticated marketplace logic that prioritizes real-time user-generated opportunities while maintaining a high-density, professional aesthetic using curated "Genesis Samples."
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 3. Neuron Scoring & Verification
+Move beyond resumes. NeuronHire uses a proprietary (0-100) scoring system that measures actual AI engineering mastery, from RAG pipeline architecture to custom model fine-tuning.
 
-## Learn More
+### 4. Interactive Command Center
+A unified dashboard for both Companies and Engineers to manage:
+- **Active Roles & Bounties**: Real-time tracking of published opportunities.
+- **Milestone Management**: Goal-oriented contract tracking.
+- **Portfolio Verification**: Showcasing validated technical wins.
 
-To learn more about Next.js, take a look at the following resources:
+## 🛠️ Tech Stack
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Framework**: [Next.js 15 (App Router)](https://nextjs.org/)
+- **Database & Auth**: [Supabase](https://supabase.com/) (PostgreSQL + RLS)
+- **Styling**: Modern CSS with Glassmorphism & High-End Animations
+- **Infrastructure**: Vercel
+- **Email**: [Resend](https://resend.com/)
+- **Payments**: [Razorpay](https://razorpay.com/) (Integrated)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🏁 Getting Started
 
-## Deploy on Vercel
+### Prerequisites
+- Node.js 18+ 
+- A Supabase Project
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Installation
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/neuronhire.git
+   cd neuronhire
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Setup Environment Variables:
+   Create a `.env.local` file in the root:
+   ```env
+   NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+   SUPABASE_SERVICE_ROLE_KEY=your_service_key
+   RAZORPAY_KEY_ID=your_key_id
+   RAZORPAY_KEY_SECRET=your_secret
+   RESEND_API_KEY=your_resend_key
+   ```
+
+4. Run the development server:
+   ```bash
+   npm run dev
+   ```
+
+## 🗺️ Future Roadmap
+
+- [ ] **Neuron Live**: Real-time AI technical interviewing agent.
+- [ ] **Smart Milestones**: Autonomous GitHub-tracking for automated payment releases.
+- [ ] **Compute Credits**: Integrated GPU partitioning for high-end AI bounties.
+
+---
+
+Built with ❤️ for the AI Engineering Community.
