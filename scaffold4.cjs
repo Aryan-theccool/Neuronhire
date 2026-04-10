@@ -14,7 +14,7 @@ import './globals.css'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'NeuronHire — India\\'s AI Talent & Marketplace Platform',
+  title: 'NeuralHire — India\\'s AI Talent & Marketplace Platform',
   description: 'Build. Be Found. Get Paid. Build Again. The premier marketplace connecting AI engineers with companies seeking AI talent.',
 }
 
@@ -23,7 +23,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         <nav className="nav">
-          <Link href="/" className="nav__logo">NeuronHire</Link>
+          <Link href="/" className="nav__logo">NeuralHire</Link>
           <div className="nav__links">
             <Link href="/jobs" className="nav__link">Jobs</Link>
             <Link href="/bounties" className="nav__link">Bounties</Link>
@@ -285,7 +285,7 @@ export default function LoginPage() {
   return (
     <div style={{maxWidth: 420, margin: '4rem auto', padding: '0 1.5rem'}}>
       <h1 style={{textAlign: 'center', marginBottom: '0.5rem'}}>Welcome Back</h1>
-      <p style={{textAlign: 'center', color: 'var(--on-surface-variant)', marginBottom: '2rem'}}>Sign in to your NeuronHire account</p>
+      <p style={{textAlign: 'center', color: 'var(--on-surface-variant)', marginBottom: '2rem'}}>Sign in to your NeuralHire account</p>
       <form onSubmit={handleLogin}>
         <div className="form-group">
           <label className="form-label">Email</label>
@@ -326,7 +326,7 @@ export default function SignupPage() {
 
   return (
     <div style={{maxWidth: 420, margin: '4rem auto', padding: '0 1.5rem'}}>
-      <h1 style={{textAlign: 'center', marginBottom: '0.5rem'}}>Join NeuronHire</h1>
+      <h1 style={{textAlign: 'center', marginBottom: '0.5rem'}}>Join NeuralHire</h1>
       <p style={{textAlign: 'center', color: 'var(--on-surface-variant)', marginBottom: '2rem'}}>Start your AI career or find top AI talent</p>
 
       <div style={{display: 'flex', gap: '0.5rem', marginBottom: '1.5rem'}}>
@@ -484,3 +484,4 @@ export async function POST(request: Request) {
 \`);
 
 console.log('All pages and API routes done!');
+

@@ -13,7 +13,7 @@ w('app/layout.tsx', [
   "import Link from 'next/link'",
   "",
   "export const metadata: Metadata = {",
-  "  title: 'NeuronHire — India\\'s AI Talent & Marketplace Platform',",
+  "  title: 'NeuralHire — India\\'s AI Talent & Marketplace Platform',",
   "  description: 'Build. Be Found. Get Paid. Build Again.',",
   "}",
   "",
@@ -22,7 +22,7 @@ w('app/layout.tsx', [
   "    <html lang=\"en\">",
   "      <body>",
   "        <nav className=\"nav\">",
-  "          <Link href=\"/\" className=\"nav__logo\">NeuronHire</Link>",
+  "          <Link href=\"/\" className=\"nav__logo\">NeuralHire</Link>",
   "          <div className=\"nav__links\">",
   "            <Link href=\"/jobs\" className=\"nav__link\">Jobs</Link>",
   "            <Link href=\"/bounties\" className=\"nav__link\">Bounties</Link>",
@@ -39,3 +39,4 @@ w('app/layout.tsx', [
 ].join('\n'));
 
 console.log('Layout done!');
+
