@@ -37,16 +37,61 @@ export default function SignupPage() {
 
       <form action={signup}>
         <input type="hidden" name="role" value={role} />
+        
         <div className="form-group">
           <label className="form-label">Email</label>
           <input className="form-input" type="email" name="email" placeholder="you@example.com" required />
         </div>
+        
         <div className="form-group">
           <label className="form-label">Password</label>
           <input className="form-input" type="password" name="password" placeholder="Min 8 characters" required minLength={8} />
         </div>
-        <button type="submit" className="btn-primary" style={{width: '100%', marginTop: '0.5rem'}}>
-          Create {role === 'engineer' ? 'Engineer' : 'Company'} Account
+
+        {role === 'engineer' && (
+          <div style={{marginTop: '2rem', borderTop: '1px solid var(--outline-variant)', paddingTop: '1.5rem'}}>
+            <h3 style={{fontSize: '0.9rem', color: 'var(--primary)', marginBottom: '1.25rem', textTransform: 'uppercase', letterSpacing: '0.1em'}}>Talent Details</h3>
+            
+            <div className="form-group">
+              <label className="form-label">Full Name</label>
+              <input className="form-input" type="text" name="full_name" placeholder="John Doe" required />
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">Phone Number</label>
+              <input className="form-input" type="tel" name="phone" placeholder="+91 98765 43210" />
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">Location</label>
+              <input className="form-input" type="text" name="location" placeholder="Bangalore, India" required />
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">Primary Role</label>
+              <select name="primary_role" className="form-input" required style={{appearance: 'none'}}>
+                <option value="">Select Role</option>
+                <option value="AI Engineer">AI Engineer</option>
+                <option value="ML Engineer">ML Engineer</option>
+                <option value="Data Scientist">Data Scientist</option>
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">Experience Level</label>
+              <select name="experience_level" className="form-input" required style={{appearance: 'none'}}>
+                <option value="">Select Level</option>
+                <option value="Fresher">Fresher (0 years)</option>
+                <option value="1-3 years">Junior (1–3 years)</option>
+                <option value="3-5 years">Intermediate (3–5 years)</option>
+                <option value="5+ years">Senior (5+ years)</option>
+              </select>
+            </div>
+          </div>
+        )}
+
+        <button type="submit" className="btn-primary" style={{width: '100%', marginTop: '1.5rem'}}>
+          {role === 'engineer' ? 'Create Talent Profile' : 'Create Company Account'}
         </button>
       </form>
       
