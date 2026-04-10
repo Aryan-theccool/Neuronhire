@@ -355,8 +355,10 @@ input:checked + .slider:before { transform: translateX(14px); }
 .page-header p { color: var(--on-surface-variant); font-size: 1rem; }
 
 .grid-3 {
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 1.25rem;
+  display: grid; 
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  justify-content: center;
+  gap: 1.5rem;
 }
 .grid-2 {
   display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));

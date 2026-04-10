@@ -88,8 +88,8 @@ export default async function Home() {
       </section>
 
       {/* Stats Bento Section */}
-      <section className="max-w-screen-xl mx-auto px-6 md:px-12 py-32" style={{marginTop: '4rem'}}>
-        <div className="grid-3" style={{gap: '1.5rem'}}>
+      <section className="mx-auto px-6 md:px-12 py-32" style={{marginTop: '4rem'}}>
+        <div className="grid-3 max-w-5xl mx-auto" style={{gap: '1.5rem'}}>
           <div className="bento-card">
             <span style={{fontSize: '11px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--primary)'}}>Global Talent</span>
             <h3 style={{fontSize: '2.5rem', fontWeight: 700, color: 'var(--on-surface)'}}>5,000+</h3>
