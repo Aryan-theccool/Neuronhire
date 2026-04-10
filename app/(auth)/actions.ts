@@ -30,41 +30,53 @@ export async function signup(formData: FormData) {
   const email = formData.get('email') as string
   const password = formData.get('password') as string
   const role = formData.get('role') as string
-  const full_name = formData.get('full_name') as string
-  const location = formData.get('location') as string
+  
+  let metaData: any = { role }
 
-  // Step 2: Capability
-  const primary_languages = (formData.get('primary_languages') as string)?.split(',').map(s => s.trim()) || []
-  const frameworks = (formData.get('frameworks') as string)?.split(',').map(s => s.trim()) || []
-  const domain_expertise = formData.getAll('domain_expertise') as string[]
-  const skill_level = formData.get('skill_level') as string
+  if (role === 'engineer') {
+    const full_name = formData.get('full_name') as string
+    const location = formData.get('location') as string
+    const primary_languages = (formData.get('primary_languages') as string)?.split(',').map(s => s.trim()) || []
+    const frameworks = (formData.get('frameworks') as string)?.split(',').map(s => s.trim()) || []
+    const domain_expertise = formData.getAll('domain_expertise') as string[]
+    const skill_level = formData.get('skill_level') as string
+    const work_type = formData.get('work_type') as string
+    const hourly_rate = parseInt(formData.get('hourly_rate') as string) || 0
+    const payout_id = formData.get('payout_id') as string
 
-  // Step 3: Proof of Work
-  const project_title = formData.get('project_title') as string
-  const project_problem = formData.get('project_problem') as string
-  const project_outcome = formData.get('project_outcome') as string
-  const project_url = formData.get('project_url') as string
+    metaData = {
+      ...metaData,
+      full_name,
+      location,
+      primary_languages,
+      frameworks,
+      domain_expertise,
+      skill_level,
+      work_preferences: { work_type, hourly_rate, is_remote: true },
+      payout_info: { payout_id }
+    }
+  } else {
+    // Company Metadata
+    const company_name = formData.get('company_name') as string
+    const industry = formData.get('industry') as string
+    const ai_needs = formData.getAll('ai_needs') as string[]
+    const budget_range = formData.get('budget_range') as string
+    const min_experience = formData.get('min_experience') as string
+    const payment_method = formData.get('payment_method') as string
 
-  // Step 4: Preferences
-  const work_type = formData.get('work_type') as string
-  const hourly_rate = parseInt(formData.get('hourly_rate') as string) || 0
-  const payout_id = formData.get('payout_id') as string
-
-  const metaData = {
-    role,
-    full_name,
-    location,
-    primary_languages,
-    frameworks,
-    domain_expertise,
-    skill_level,
-    work_preferences: {
-      work_type,
-      hourly_rate,
-      is_remote: true
-    },
-    payout_info: {
-      payout_id
+    metaData = {
+      ...metaData,
+      company_name,
+      industry,
+      ai_readiness: {
+        used_ai: formData.get('used_ai'),
+        needs: ai_needs,
+        budget_range
+      },
+      hiring_intent: {
+        min_experience,
+        payment_method
+      }
     }
   }
 
@@ -80,17 +92,35 @@ export async function signup(formData: FormData) {
     redirect('/signup?message=' + encodeURIComponent(error.message))
   }
 
-  // If engineer, insert the initial project
-  if (role === 'engineer' && authData.user && project_title) {
-    await supabase.from('projects').insert([{
-      engineer_id: authData.user.id,
-      title: project_title,
-      problem: project_problem,
-      approach: 'Initial case study during onboarding',
-      outcome: project_outcome,
-      github_url: project_url,
-      is_featured: true
-    }])
+  // Handle Initial Postings
+  if (authData.user) {
+    if (role === 'engineer') {
+      const project_title = formData.get('project_title') as string
+      if (project_title) {
+        await supabase.from('projects').insert([{
+          engineer_id: authData.user.id,
+          title: project_title,
+          problem: formData.get('project_problem'),
+          approach: 'Initial case study',
+          outcome: formData.get('project_outcome'),
+          is_featured: true
+        }])
+      }
+    } else {
+      // Company Initial Job Post
+      const problem_title = formData.get('problem_title') as string
+      if (problem_title) {
+        await supabase.from('jobs').insert([{
+          company_id: authData.user.id,
+          title: problem_title,
+          description: formData.get('problem_description'),
+          budget_inr: parseInt(formData.get('problem_budget') as string) || 0,
+          location: 'Remote',
+          type: 'Freelance', // Default during onboarding
+          status: 'active'
+        }])
+      }
+    }
   }
 
   revalidatePath('/', 'layout')
