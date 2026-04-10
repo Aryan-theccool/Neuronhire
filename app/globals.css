@@ -585,7 +585,7 @@ input:checked + .slider:before { transform: translateX(14px); }
 .hero-bg-overlay {
   position: absolute; inset: 0; z-index: 0;
   pointer-events: none;
-  background: radial-gradient(circle at 50% 50%, rgba(18, 19, 21, 0.4) 0%, rgba(18, 19, 21, 0.8) 100%);
+  background: radial-gradient(circle at 50% 50%, rgba(18, 19, 21, 0.15) 0%, rgba(18, 19, 21, 0.8) 100%);
 }
 
 .hero-video-bg {
@@ -597,7 +597,7 @@ input:checked + .slider:before { transform: translateX(14px); }
   object-fit: cover;
   z-index: -1;
   pointer-events: none;
-  opacity: 0.6; /* Balanced for vibrancy and readability */
+  opacity: 0.85; /* Increased for better visibility */
 }
 
 .hero-image {
