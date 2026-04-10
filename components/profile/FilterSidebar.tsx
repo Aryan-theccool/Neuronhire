@@ -72,7 +72,7 @@ export default function FilterSidebar() {
                 onChange={(e) => handleSkillChange(skill, e.target.checked)}
               />
               <span className="item-name">{skill}</span>
-              <span className="item-count">{Math.floor(Math.random() * 100) + 50}</span>
+              <span className="item-count">12</span>
             </label>
           ))}
         </div>
