@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import EngineerProfileCard from '@/components/profile/EngineerProfileCard'
+import EngineerCard from '@/components/profile/EngineerCard'
 import JobCard from '@/components/hiring/JobCard'
 import BountyCard from '@/components/hiring/BountyCard'
 import ProductCard from '@/components/marketplace/ProductCard'
@@ -67,7 +67,7 @@ export default async function Home() {
         <h2 className="section-title">Top Engineers</h2>
         <div className="grid-3" style={{marginBottom: '3rem'}}>
           {displayEngineers.length > 0 ? (
-            displayEngineers.map((e: any) => <EngineerProfileCard key={e.username} engineer={e} />)
+            displayEngineers.map((e: any) => <EngineerCard key={e.username} engineer={e} />)
           ) : (
             <p>No engineers found.</p>
           )}
