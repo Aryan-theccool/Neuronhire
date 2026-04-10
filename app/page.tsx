@@ -10,27 +10,41 @@ export const revalidate = 0;
 export default async function Home() {
   const supabase = await createClient();
 
-  const [
-    { data: engineers },
-    { data: jobs },
-    { data: bounties },
-    { data: products },
-    { data: session }
-  ] = await Promise.all([
-    supabase.from('engineers').select('*').limit(3),
-    supabase.from('job_postings').select('*, company:companies(company_name, logo_url)').limit(2).order('created_at', { ascending: false }),
-    supabase.from('bounties').select('*, company:companies(company_name, logo_url)').limit(2).order('created_at', { ascending: false }),
-    supabase.from('marketplace_products').select('*, engineer:engineers(full_name, avatar_url, username)').limit(3).order('created_at', { ascending: false }),
-    supabase.auth.getUser()
-  ]);
+  // Robust data fetching with fallbacks to prevent 500 errors
+  let engineers: any[] = [];
+  let jobs: any[] = [];
+  let bounties: any[] = [];
+  let products: any[] = [];
+  let user: any = null;
 
-  const user = session?.user;
-  const role = user?.user_metadata?.role || 'engineer';
+  try {
+    const [
+      { data: engineersData },
+      { data: jobsData },
+      { data: bountiesData },
+      { data: productsData },
+      { data: userData }
+    ] = await Promise.all([
+      supabase.from('engineers').select('*').limit(3),
+      supabase.from('job_postings').select('*, company:companies(company_name, logo_url)').limit(2).order('created_at', { ascending: false }),
+      supabase.from('bounties').select('*, company:companies(company_name, logo_url)').limit(2).order('created_at', { ascending: false }),
+      supabase.from('marketplace_products').select('*, engineer:engineers(full_name, avatar_url, username)').limit(3).order('created_at', { ascending: false }),
+      supabase.auth.getUser()
+    ]);
 
-  const displayEngineers = engineers || [];
-  const displayJobs = jobs || [];
-  const displayBounties = bounties || [];
-  const displayProducts = products || [];
+    engineers = engineersData || [];
+    jobs = jobsData || [];
+    bounties = bountiesData || [];
+    products = productsData || [];
+    user = userData?.user || null;
+  } catch (err) {
+    console.error('Home Page Data Fetching Error:', err);
+  }
+
+  const displayEngineers = engineers;
+  const displayJobs = jobs;
+  const displayBounties = bounties;
+  const displayProducts = products;
 
   return (
     <>
@@ -60,7 +74,7 @@ export default async function Home() {
             A curated platform for B2B AI talent and products. No fluff, just results. Built for teams who need surgical precision in neural architecture.
           </p>
 
-          <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyCenter: 'center', gap: '1rem', flexWrap: 'wrap'}}>
+          <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap'}}>
             <Link href="/engineers" className="btn-primary" style={{padding: '1rem 2.5rem'}}>
               Find Talent
               <span className="material-symbols-outlined" style={{fontSize: '18px', marginLeft: '0.5rem'}}>arrow_forward</span>
@@ -120,7 +134,7 @@ export default async function Home() {
             </p>
             <div style={{display: 'flex', flexDirection: 'column', gap: '2rem'}}>
               <div style={{display: 'flex', gap: '1.25rem'}}>
-                <div style={{width: '40px', height: '40px', background: 'var(--surface-container-high)', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyCenter: 'center', flexShrink: 0}}>
+                <div style={{width: '40px', height: '40px', background: 'var(--surface-container-high)', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0}}>
                   <span className="material-symbols-outlined" style={{color: 'var(--primary)'}}>verified_user</span>
                 </div>
                 <div>
@@ -129,7 +143,7 @@ export default async function Home() {
                 </div>
               </div>
               <div style={{display: 'flex', gap: '1.25rem'}}>
-                <div style={{width: '40px', height: '40px', background: 'var(--surface-container-high)', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyCenter: 'center', flexShrink: 0}}>
+                <div style={{width: '40px', height: '40px', background: 'var(--surface-container-high)', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0}}>
                   <span className="material-symbols-outlined" style={{color: 'var(--primary)'}}>database</span>
                 </div>
                 <div>
@@ -157,7 +171,7 @@ export default async function Home() {
             <p style={{color: 'var(--on-surface-variant)', fontSize: '1.1rem', maxWidth: '30rem', margin: '0 auto 2.5rem'}}>
               Join the world's most innovative companies leveraging NeuralHire to bridge the AI talent gap.
             </p>
-            <div style={{display: 'flex', gap: '1rem', justifyCenter: 'center', flexWrap: 'wrap'}}>
+            <div style={{display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap'}}>
               <Link href="/contact" className="btn-primary" style={{padding: '1rem 3rem'}}>Contact Sales</Link>
               <Link href="/engineers" className="btn-secondary" style={{padding: '1rem 3rem'}}>Explore Talent</Link>
             </div>
