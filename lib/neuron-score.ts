@@ -24,8 +24,18 @@ export async function calculateNeuronScore(engineerId: string, supabase: any): P
 
   const bountyWins = Math.min((bounties.data?.length || 0) * 30, 90);
   const p = profile.data;
-  const completeness = [p?.bio, p?.avatar_url, p?.github_url, p?.ai_philosophy, p?.ai_stack?.length, p?.location].filter(Boolean).length / 6;
-  const communityScore = Math.min(bountyWins + Math.round(completeness * 60), 150);
+  // Calculate completeness based on the extensive new onboarding v2 fields
+  const completenessFactors = [
+    p?.bio, p?.avatar_url, p?.github_url, p?.ai_philosophy, p?.location,
+    p?.primary_languages?.length > 0,
+    p?.frameworks?.length > 0,
+    p?.domain_expertise?.length > 0,
+    p?.skill_level,
+    p?.work_preferences?.work_type,
+    p?.payout_info?.payout_id
+  ].filter(Boolean).length / 11;
+
+  const communityScore = Math.min(bountyWins + Math.round(completenessFactors * 60), 150);
 
   const total = Math.min(projectScore + badgeScore + ratingScore + marketScore + communityScore, 1000);
   await supabase.from('engineers').update({ neuron_score: total }).eq('id', engineerId);
