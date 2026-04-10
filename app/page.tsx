@@ -4,6 +4,7 @@ import JobCard from '@/components/hiring/JobCard'
 import BountyCard from '@/components/hiring/BountyCard'
 import ProductCard from '@/components/marketplace/ProductCard'
 import { createClient } from '@/lib/supabase/server'
+import HeroVideo from '@/components/ui/HeroVideo'
 
 export const revalidate = 0;
 
@@ -51,16 +52,11 @@ export default async function Home() {
       {/* Hero Section */}
       <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden px-6 hero-gradient" style={{paddingTop: '6rem'}}>
         <div className="hero-bg-overlay">
-          <video 
-            autoPlay 
-            loop 
-            muted 
-            playsInline 
+          <HeroVideo 
+            src="/bg.mp4"
             poster="https://lh3.googleusercontent.com/aida-public/AB6AXuAbcI7KSEUcjsLzgZ7ZBCLfO9EqK7ycWW38kXrBLInA_cN3TF-GQ9dpjegU-qmD7RcGp5YdtCaSn9qWdHnHNmQnU3XA9IAtAmssP6zMSgNKB9C5jGwA1kXuf07irH-QOx-t0KdFcVLcWzCjj54yZB6tHL_Miqoy8QirTh3jpbzyDzh7xcxi_sukeHPbCONUnI0-eYK0cJ4wtaUXeaHo769kE7IopXtoM6Nksi2PdQwLTdWYtzf8cbzxq27qdHMOlE5qZCLJs3lSk1Q"
             className="hero-video-bg"
-          >
-            <source src="/bg.mp4" type="video/mp4" />
-          </video>
+          />
         </div>
         
         <div className="relative z-10 max-w-5xl mx-auto text-center" style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
