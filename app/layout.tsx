@@ -68,41 +68,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             </div>
           </div>
         </footer>
-
-        <style jsx>{`
-          .fixed { position: fixed; }
-          .top-0 { top: 0; }
-          .w-full { width: 100%; }
-          .z-50 { z-index: 50; }
-          .bg-opacity-30 { --tw-bg-opacity: 0.3; }
-          .backdrop-blur-md { backdrop-filter: blur(12px); }
-          .flex { display: flex; }
-          .justify-between { justify-content: space-between; }
-          .items-center { align-items: center; }
-          .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
-          .h-16 { height: 4rem; }
-          .max-w-screen-2xl { max-width: 1536px; }
-          .mx-auto { margin-left: auto; margin-right: auto; }
-          .gap-12 { gap: 3rem; }
-          .gap-8 { gap: 2rem; }
-          .hidden { display: none; }
-          @media (min-width: 768px) {
-            .md\\:flex { display: flex; }
-            .md\\:px-12 { padding-left: 3rem; padding-right: 3rem; }
-          }
-          .tracking-tighter { letter-spacing: -0.05em; }
-          .text-xl { font-size: 1.25rem; }
-          .font-bold { font-weight: 700; }
-          .no-underline { text-decoration: none; }
-          .bg-gradient-to-b { background: linear-gradient(to bottom, var(--primary), var(--primary-container)); }
-          .rounded-lg { border-radius: 0.5rem; }
-          .px-5 { padding-left: 1.25rem; padding-right: 1.25rem; }
-          .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
-          .transition-transform { transition-property: transform; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
-          .scale-95 { transform: scale(0.95); }
-          .active\\:scale-90:active { transform: scale(0.9); }
-          .origin-left { transform-origin: left; }
-        `}</style>
       </body>
     </html>
   )

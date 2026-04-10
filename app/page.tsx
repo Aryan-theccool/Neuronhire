@@ -36,9 +36,9 @@ export default async function Home() {
     <>
       {/* Hero Section */}
       <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden px-6 hero-gradient">
-        <div className="absolute inset-0 z-0 opacity-10 pointer-events-none">
+        <div className="hero-bg-overlay">
           <img 
-            className="w-full h-full object-cover" 
+            className="hero-image" 
             alt="abstract neural network visualization" 
             src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbcI7KSEUcjsLzgZ7ZBCLfO9EqK7ycWW38kXrBLInA_cN3TF-GQ9dpjegU-qmD7RcGp5YdtCaSn9qWdHnHNmQnU3XA9IAtAmssP6zMSgNKB9C5jGwA1kXuf07irH-QOx-t0KdFcVLcWzCjj54yZB6tHL_Miqoy8QirTh3jpbzyDzh7xcxi_sukeHPbCONUnI0-eYK0cJ4wtaUXeaHo769kE7IopXtoM6Nksi2PdQwLTdWYtzf8cbzxq27qdHMOlE5qZCLJs3lSk1Q"
           />
@@ -60,7 +60,7 @@ export default async function Home() {
             A curated platform for B2B AI talent and products. No fluff, just results. Built for teams who need surgical precision in neural architecture.
           </p>
 
-          <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap'}}>
+          <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyCenter: 'center', gap: '1rem', flexWrap: 'wrap'}}>
             <Link href="/engineers" className="btn-primary" style={{padding: '1rem 2.5rem'}}>
               Find Talent
               <span className="material-symbols-outlined" style={{fontSize: '18px', marginLeft: '0.5rem'}}>arrow_forward</span>
@@ -157,26 +157,13 @@ export default async function Home() {
             <p style={{color: 'var(--on-surface-variant)', fontSize: '1.1rem', maxWidth: '30rem', margin: '0 auto 2.5rem'}}>
               Join the world's most innovative companies leveraging NeuralHire to bridge the AI talent gap.
             </p>
-            <div style={{display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap'}}>
+            <div style={{display: 'flex', gap: '1rem', justifyCenter: 'center', flexWrap: 'wrap'}}>
               <Link href="/contact" className="btn-primary" style={{padding: '1rem 3rem'}}>Contact Sales</Link>
               <Link href="/engineers" className="btn-secondary" style={{padding: '1rem 3rem'}}>Explore Talent</Link>
             </div>
           </div>
         </section>
       </div>
-
-      <style jsx>{`
-        .w-full { width: 100%; }
-        .h-full { height: 100%; }
-        .object-cover { object-fit: cover; }
-        .relative { position: relative; }
-        .absolute { position: absolute; }
-        .inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
-        .z-0 { z-index: 0; }
-        .z-10 { z-index: 10; }
-        .aspect-video { aspect-ratio: 16 / 9; }
-        .shadow-2xl { box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); }
-      `}</style>
     </>
   )
 }
