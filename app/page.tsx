@@ -49,7 +49,7 @@ export default async function Home() {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden px-6 hero-gradient">
+      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden px-6 hero-gradient" style={{paddingTop: '6rem'}}>
         <div className="hero-bg-overlay">
           <img 
             className="hero-image" 
@@ -58,19 +58,19 @@ export default async function Home() {
           />
         </div>
         
-        <div className="relative z-10 max-w-5xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1 mb-8 rounded-full bg-surface-container-low border border-outline-variant/20">
+        <div className="relative z-10 max-w-5xl mx-auto text-center" style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+          <div className="inline-flex items-center gap-2 px-3 py-1 mb-8 rounded-full bg-surface-container-low border border-outline-variant/20" style={{margin: '0 auto'}}>
             <span className="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_#adc6ff]"></span>
             <span style={{fontFamily: 'var(--font-body)', fontSize: '10px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--on-surface-variant)'}}>
               The Future of AI Engineering is here
             </span>
           </div>
           
-          <h1 style={{fontSize: 'clamp(2.5rem, 8vw, 6rem)', fontWeight: 800, letterSpacing: '-0.04em', lineHeight: 0.95, color: 'var(--on-surface)', marginBottom: '2rem'}}>
+          <h1 style={{fontSize: 'clamp(2.5rem, 8vw, 6rem)', fontWeight: 800, letterSpacing: '-0.04em', lineHeight: 0.95, color: 'var(--on-surface)', marginBottom: '2rem', textAlign: 'center'}}>
             Hire the world's best <span style={{color: 'var(--primary)'}}>AI engineers.</span>
           </h1>
           
-          <p style={{maxWidth: '42rem', margin: '0 auto 3rem', fontSize: 'clamp(1rem, 2vw, 1.25rem)', color: 'var(--on-surface-variant)', fontWeight: 500, lineHeight: 1.6}}>
+          <p style={{maxWidth: '42rem', margin: '0 auto 3rem', fontSize: 'clamp(1rem, 2vw, 1.25rem)', color: 'var(--on-surface-variant)', fontWeight: 500, lineHeight: 1.6, textAlign: 'center'}}>
             A curated platform for B2B AI talent and products. No fluff, just results. Built for teams who need surgical precision in neural architecture.
           </p>
 
