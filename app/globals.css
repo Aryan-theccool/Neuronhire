@@ -138,6 +138,70 @@ a:hover { color: var(--primary-container); }
   border-radius: 50%;
 }
 
+/* === EXPLORE ENGINEERS UI === */
+.metric-pill {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: rgba(168, 85, 247, 0.2);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  border-radius: 999px;
+  color: var(--primary);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.85rem;
+  box-shadow: 0 0 20px rgba(168, 85, 247, 0.2);
+}
+
+.glass-badge {
+  padding: 0.25rem 0.75rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-sm);
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.glass-badge--featured { background: rgba(168, 85, 247, 0.3); border-color: rgba(168, 85, 247, 0.5); }
+.glass-badge--demo { background: rgba(52, 181, 250, 0.3); border-color: rgba(52, 181, 250, 0.5); }
+.glass-badge--available { background: rgba(16, 185, 129, 0.3); border-color: rgba(16, 185, 129, 0.5); }
+
+.filter-toggle {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.5rem 0;
+}
+
+.switch {
+  position: relative; display: inline-block; width: 34px; height: 20px;
+}
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider {
+  position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+  background-color: var(--surface-container-highest); transition: .4s; border-radius: 20px;
+}
+.slider:before {
+  position: absolute; content: ""; height: 14px; width: 14px; left: 3px; bottom: 3px;
+  background-color: white; transition: .4s; border-radius: 50%;
+}
+input:checked + .slider { background-color: var(--primary); }
+input:checked + .slider:before { transform: translateX(14px); }
+
+.search-container {
+  display: flex; gap: 1rem; margin-bottom: 2rem;
+  background: var(--surface-container);
+  padding: 0.5rem; border-radius: var(--radius-lg);
+  border: 1px solid var(--outline-variant);
+}
+
+.search-input-wrapper { flex: 1; display: flex; align-items: center; gap: 0.75rem; padding-left: 1rem; }
+.search-input-wrapper input {
+  background: transparent; border: none; color: var(--on-surface);
+  width: 100%; outline: none; font-size: 0.9rem;
+}
+
 /* === NEURON SCORE RING === */
 .neuron-ring-wrapper { position: relative; display: inline-block; }
 .neuron-tooltip {
