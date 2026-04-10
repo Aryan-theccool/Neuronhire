@@ -26,29 +26,33 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
       </head>
       <body className="bg-surface text-on-surface">
-        <nav className="fixed top-0 w-full z-50 bg-[#1b1c1e] bg-opacity-30 backdrop-blur-md border-b border-outline-variant/10">
-          <div className="flex justify-between items-center px-6 md:px-12 h-16 w-full max-w-screen-2xl mx-auto">
+        <nav className="fixed top-0 w-full z-50 nav-glass">
+          <div className="flex justify-between items-center px-6 md-px-12 h-16 w-full max-w-screen-2xl mx-auto">
             <div className="flex items-center gap-12">
-              <Link href="/" className="text-xl font-bold tracking-tighter text-[#e3e2e5] no-underline">NeuralHire</Link>
-              <div className="hidden md:flex gap-8">
-                <Link href="/engineers" className="text-[#c2c6d4] hover:text-[#e3e2e5] transition-colors font-['Inter'] text-[11px] font-semibold uppercase tracking-widest no-underline">Explore Engineers</Link>
-                <Link href="/jobs" className="text-[#c2c6d4] hover:text-[#e3e2e5] transition-colors font-['Inter'] text-[11px] font-semibold uppercase tracking-widest no-underline">Browse Tasks</Link>
-                <Link href="/marketplace" className="text-[#c2c6d4] hover:text-[#e3e2e5] transition-colors font-['Inter'] text-[11px] font-semibold uppercase tracking-widest no-underline">Marketplace</Link>
-                <Link href="/knowledge" className="text-[#c2c6d4] hover:text-[#e3e2e5] transition-colors font-['Inter'] text-[11px] font-semibold uppercase tracking-widest no-underline">Knowledge Hub</Link>
+              <Link href="/" className="nav__logo no-underline">NeuralHire</Link>
+              <div className="hidden md-flex gap-8">
+                <Link href="/engineers" className="nav__link no-underline uppercase tracking-widest text-[11px]">Explore Engineers</Link>
+                <Link href="/jobs" className="nav__link no-underline uppercase tracking-widest text-[11px]">Browse Tasks</Link>
+                <Link href="/marketplace" className="nav__link no-underline uppercase tracking-widest text-[11px]">Marketplace</Link>
+                <Link href="/knowledge" className="nav__link no-underline uppercase tracking-widest text-[11px]">Knowledge Hub</Link>
               </div>
             </div>
             <div className="flex items-center gap-4">
               {user ? (
                 <>
-                  <Link href="/dashboard" className="text-[#adc6ff] font-['Inter'] text-[11px] font-semibold uppercase tracking-widest hover:bg-[#292a2c] px-4 py-2 rounded-lg transition-all no-underline">Dashboard</Link>
-                  <form action="/auth/signout" method="post">
-                    <button type="submit" className="bg-gradient-to-b from-primary to-primary-container text-[#001a42] px-5 py-2 rounded-lg font-['Inter'] text-[11px] font-semibold uppercase tracking-widest scale-95 active:scale-90 transition-transform">Sign Out</button>
+                  <Link href="/dashboard" className="nav__link no-underline uppercase tracking-widest text-[11px] px-4 py-2 hover:bg-surface-container rounded-lg transition-all">Dashboard</Link>
+                  <form action="/auth/signout" method="post" style={{margin: 0}}>
+                    <button type="submit" className="btn-primary" style={{padding: '0.5rem 1.25rem', fontSize: '10px'}}>
+                      Sign Out
+                    </button>
                   </form>
                 </>
               ) : (
                 <>
-                  <Link href="/login" className="text-[#adc6ff] font-['Inter'] text-[11px] font-semibold uppercase tracking-widest hover:bg-[#292a2c] px-4 py-2 rounded-lg transition-all no-underline">Sign In</Link>
-                  <Link href="/signup" className="bg-gradient-to-b from-primary to-primary-container text-[#001a42] px-5 py-2 rounded-lg font-['Inter'] text-[11px] font-semibold uppercase tracking-widest scale-95 active:scale-90 transition-transform no-underline">Get Started</Link>
+                  <Link href="/login" className="nav__link no-underline uppercase tracking-widest text-[11px] px-4 py-2 hover:bg-surface-container rounded-lg transition-all">Sign In</Link>
+                  <Link href="/signup" className="btn-primary no-underline" style={{padding: '0.5rem 1.25rem', fontSize: '10px'}}>
+                    Get Started
+                  </Link>
                 </>
               )}
             </div>

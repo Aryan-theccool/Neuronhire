@@ -95,7 +95,7 @@ export default async function EngineersPage({ searchParams }: PageProps) {
 
           <div className="engineers-grid">
             {engineers && engineers.length > 0 ? (
-              engineers.map((e) => (
+              engineers.map((e: any) => (
                 <EngineerCard key={e.username} engineer={e} />
               ))
             ) : (
