@@ -10,7 +10,7 @@ export default function LoginPage() {
   return (
     <div style={{maxWidth: 420, margin: '4rem auto', padding: '0 1.5rem'}}>
       <h1 style={{textAlign: 'center', marginBottom: '0.5rem'}}>Welcome Back</h1>
-      <p style={{textAlign: 'center', color: 'var(--on-surface-variant)', marginBottom: '2rem'}}>Sign in to your NeuronHire account</p>
+      <p style={{textAlign: 'center', color: 'var(--on-surface-variant)', marginBottom: '2rem'}}>Sign in to your NeuralHire account</p>
       
       {message && (
         <p className="error-message" style={{color: 'red', textAlign: 'center', marginBottom: '1rem'}}>
@@ -39,3 +39,4 @@ export default function LoginPage() {
     </div>
   )
 }
+

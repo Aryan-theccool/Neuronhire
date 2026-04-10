@@ -11,7 +11,7 @@ export default function SignupPage() {
 
   return (
     <div style={{maxWidth: 420, margin: '4rem auto', padding: '0 1.5rem'}}>
-      <h1 style={{textAlign: 'center', marginBottom: '0.5rem'}}>Join NeuronHire</h1>
+      <h1 style={{textAlign: 'center', marginBottom: '0.5rem'}}>Join NeuralHire</h1>
       <p style={{textAlign: 'center', color: 'var(--on-surface-variant)', marginBottom: '2rem'}}>Start your AI career or find top AI talent</p>
 
       {message && (
@@ -59,3 +59,4 @@ export default function SignupPage() {
     </div>
   )
 }
+

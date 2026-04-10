@@ -16,7 +16,7 @@ export async function sendEmail({ to, subject, html }: { to: string, subject: st
 
   try {
     const { data, error } = await resend.emails.send({
-      from: 'NeuronHire <notifications@neuronhire.app>',
+      from: 'NeuralHire <notifications@NeuralHire.app>',
       to,
       subject,
       html,
@@ -32,3 +32,4 @@ export async function sendEmail({ to, subject, html }: { to: string, subject: st
     return { error: err.message }
   }
 }
+

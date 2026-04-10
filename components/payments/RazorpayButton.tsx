@@ -40,7 +40,7 @@ export default function RazorpayButton({ amountINR, buttonText = "Buy Now" }: { 
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || 'rzp_test_rYn0e6Z9q5J0S9', // Use fallback test key if needed
         amount: order.amount,
         currency: order.currency,
-        name: 'NeuronHire India',
+        name: 'NeuralHire India',
         description: 'Test AI Purchase',
         order_id: order.id,
         handler: function (response: any) {
@@ -48,7 +48,7 @@ export default function RazorpayButton({ amountINR, buttonText = "Buy Now" }: { 
         },
         prefill: {
           name: 'Test Indian User',
-          email: 'test@neuronhire.in',
+          email: 'test@NeuralHire.in',
           contact: '9999999999'
         },
         theme: {
@@ -71,3 +71,4 @@ export default function RazorpayButton({ amountINR, buttonText = "Buy Now" }: { 
     </button>
   )
 }
+

@@ -73,7 +73,7 @@ export function EngineerForms({ profile, projects, proposals, contracts }: Engin
           <div className="glass-card">
             <h2 style={{fontSize: '1.75rem', marginBottom: '1.5rem'}}>Monetize AI Assets</h2>
             <p style={{color: 'var(--on-surface-variant)', fontSize: '0.9rem', marginBottom: '2rem'}}>
-              Sell your models, agents, and datasets directly to the NeuronHire community.
+              Sell your models, agents, and datasets directly to the NeuralHire community.
             </p>
 
             <form onSubmit={handleSubmit} className="form-section">
@@ -138,3 +138,4 @@ export function EngineerForms({ profile, projects, proposals, contracts }: Engin
     </div>
   )
 }
+

@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 
 export const metadata: Metadata = {
-  title: 'NeuronHire — India\'s AI Talent & Marketplace Platform',
+  title: 'NeuralHire — India\'s AI Talent & Marketplace Platform',
   description: 'Build. Be Found. Get Paid. Build Again.',
 }
 
@@ -16,11 +16,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html lang="en">
       <body>
         <nav className="nav">
-          <Link href="/" className="nav__logo">NeuronHire</Link>
+          <Link href="/" className="nav__logo">NeuralHire</Link>
           <div className="nav__links">
-            <Link href="/jobs" className="nav__link">Jobs</Link>
-            <Link href="/bounties" className="nav__link">Bounties</Link>
+            <Link href="/engineers" className="nav__link">Explore Engineers</Link>
+            <Link href="/jobs" className="nav__link">Browse Tasks</Link>
             <Link href="/marketplace" className="nav__link">Marketplace</Link>
+            <Link href="/knowledge" className="nav__link">Knowledge Hub</Link>
             
             {user ? (
               <>
