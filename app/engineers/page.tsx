@@ -112,54 +112,6 @@ export default async function EngineersPage({ searchParams }: PageProps) {
         </main>
       </div>
 
-      <style jsx>{`
-        .exploration-header { margin-bottom: 3rem; }
-        .header-top { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 0.5rem; }
-        .header-top h1 { font-size: 2.5rem; color: #fff; margin: 0; font-family: var(--font-display); }
-        .count-badge { 
-          display: flex; align-items: center; gap: 0.5rem;
-          padding: 0.375rem 0.75rem; background: rgba(168, 85, 247, 0.1); 
-          border-radius: 999px; color: var(--primary); font-family: var(--font-display);
-          font-weight: 700; font-size: 0.8rem; border: 1px solid rgba(168, 85, 247, 0.2);
-        }
-        .pulse-dot { width: 8px; height: 8px; background: var(--primary); border-radius: 50%; box-shadow: 0 0 10px var(--primary); }
-        .subtitle { color: var(--on-surface-variant); font-size: 1.1rem; }
-
-        .explorer-layout { display: grid; grid-template-columns: 280px 1fr; gap: 3rem; }
-        
-        .explorer-main { min-width: 0; }
-        .results-controls { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
-        
-        .sort-select-premium {
-          background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08);
-          color: #fff; padding: 0 1.25rem; border-radius: var(--radius-lg); font-weight: 600; 
-          height: 100%; outline: none; cursor: pointer; min-width: 160px;
-        }
-        .sort-select-premium:hover { background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.15); }
-
-        .results-info { margin-bottom: 2rem; color: var(--on-surface-variant); font-size: 0.9rem; }
-        .highlight { color: #fff; font-weight: 600; font-family: var(--font-display); }
-
-        .engineers-grid { 
-          display: grid; 
-          grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); 
-          gap: 2rem; 
-        }
-
-        .no-results { 
-          text-align: center; padding: 5rem 0; grid-column: 1 / -1; 
-          background: var(--surface-container); border-radius: var(--radius-xl);
-          border: 1px dashed var(--outline-variant);
-        }
-        .no-results-icon { font-size: 3rem; margin-bottom: 1rem; }
-        .no-results h3 { color: #fff; margin-bottom: 0.5rem; }
-        .no-results p { color: var(--on-surface-variant); }
-
-        @media (max-width: 1024px) {
-          .explorer-layout { grid-template-columns: 1fr; }
-          .header-top { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
-        }
-      `}</style>
     </div>
   )
 }

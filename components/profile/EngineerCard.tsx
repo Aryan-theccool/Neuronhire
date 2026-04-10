@@ -113,8 +113,6 @@ export default function EngineerCard({ engineer }: EngineerCardProps) {
           <span className="response-time">⚡ Responds &lt; 2 hours</span>
         </div>
       </div>
-
-      </div>
     </Link>
   )
 }
