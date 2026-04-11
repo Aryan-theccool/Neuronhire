@@ -61,16 +61,18 @@ export default async function EngineersPage({ searchParams }: PageProps) {
   }
 
   return (
-    <div className="page-container">
-      <header className="exploration-header">
-        <div className="header-top">
+    <div className="page-container" style={{ paddingTop: '2rem' }}>
+      <header className="cinema-header">
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginBottom: '1rem' }}>
           <h1>Explore AI Engineers</h1>
-          <div className="count-badge">
+          <div className="count-badge" style={{ background: 'rgba(173, 198, 255, 0.1)', border: '1px solid rgba(173, 198, 255, 0.2)' }}>
             <span className="pulse-dot" />
-            {totalEngineers || 0} engineers available
+            <span style={{ color: 'var(--primary)', fontWeight: 700 }}>{totalEngineers || 0} engineers live</span>
           </div>
         </div>
-        <p className="subtitle">Discover engineers with verified proof-of-work portfolios and live demos</p>
+        <p className="subtitle" style={{ maxWidth: '700px', fontSize: '1.1rem', opacity: 0.8 }}>
+          Discover elite engineers with verified proof-of-work portfolios and high-fidelity neural implementations.
+        </p>
       </header>
 
       <div className="explorer-layout">
