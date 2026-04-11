@@ -23,11 +23,19 @@ export default async function BountiesPage() {
   ].slice(0, 8);
 
   return (
-    <div className="page-container">
-      <div className="page-header">
-        <h1>Bounty Board</h1>
-        <p>Solve challenging AI problems. Win real rewards.</p>
-      </div>
+    <div className="page-container" style={{ paddingTop: '2rem' }}>
+      <header className="cinema-header">
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginBottom: '1rem' }}>
+          <h1>Open AI Bounties</h1>
+          <div className="count-badge" style={{ background: 'rgba(245, 158, 11, 0.1)', border: '1px solid rgba(245, 158, 11, 0.2)' }}>
+            <span className="pulse-dot" style={{ background: 'var(--warning)', boxShadow: '0 0 10px var(--warning)' }} />
+            <span style={{ color: 'var(--warning)', fontWeight: 700 }}>{displayBounties.length} active tasks</span>
+          </div>
+        </div>
+        <p className="subtitle" style={{ maxWidth: '750px', fontSize: '1.1rem', opacity: 0.8 }}>
+          Solve the frontier's most complex AI problems. Earn verified reputation and high-stakes financial rewards.
+        </p>
+      </header>
       <div className="grid-2">
         {displayBounties.length > 0 ? (
           displayBounties.map((b: any) => <BountyCard key={b.id} bounty={b} />)

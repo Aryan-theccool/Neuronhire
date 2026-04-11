@@ -34,7 +34,7 @@ export default function EngineerCard({ engineer }: EngineerCardProps) {
   const successRate = engineer.success_rate || 100
 
   return (
-    <Link href={`/engineer/${engineer.username}`} className="engineer-card-premium">
+    <Link href={`/engineer/${engineer.username}`} className="engineer-card-premium glass-card-premium">
       <div className="card-banner" style={{ backgroundImage: `url(${bgImage})` }}>
         <div className="card-badges">
           <span className="glass-badge glass-badge--featured">★ Featured</span>

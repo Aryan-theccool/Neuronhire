@@ -24,13 +24,19 @@ export default async function MarketplacePage() {
   ].slice(0, 9);
 
   return (
-    <div className="page-container" style={{ paddingTop: '3rem' }}>
-      <div className="page-header" style={{ marginBottom: '3rem' }}>
-        <h1 style={{ fontSize: '3rem', marginBottom: '0.75rem', fontFamily: 'var(--font-display)' }}>AI Marketplace</h1>
-        <p style={{ fontSize: '1.25rem', color: 'var(--on-surface-variant)', maxWidth: '800px' }}>
-          Explore and acquire elite AI agents, custom models, and specialized datasets built by the Indian AI vanguard.
+    <div className="page-container" style={{ paddingTop: '2rem' }}>
+      <header className="cinema-header">
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginBottom: '1rem' }}>
+          <h1>AI Marketplace</h1>
+          <div className="count-badge" style={{ background: 'rgba(173, 198, 255, 0.1)', border: '1px solid rgba(173, 198, 255, 0.2)' }}>
+            <span className="pulse-dot" />
+            <span style={{ color: 'var(--primary)', fontWeight: 700 }}>{displayProducts.length}+ assets available</span>
+          </div>
+        </div>
+        <p className="subtitle" style={{ maxWidth: '750px', fontSize: '1.1rem', opacity: 0.8 }}>
+          Discover elite AI agents, custom models, and specialized workflows built by the vanguard of neural engineering.
         </p>
-      </div>
+      </header>
 
       <div className="sidebar-layout">
         <aside className="filters">
