@@ -4,6 +4,7 @@ import { CompanyForms } from '@/components/dashboard/CompanyForms'
 import { EngineerForms } from '@/components/dashboard/EngineerForms'
 import NotificationCenter from '@/components/notifications/NotificationCenter'
 import { ensureProfileExists, getPrecisionMatches, getEngineerInvitations } from './actions'
+import { CinematicAnalytics } from '@/components/dashboard/analytics/CinematicAnalytics'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -90,15 +91,23 @@ export default async function DashboardPage() {
         </div>
       </div>
 
-      <div className="grid-2">
-        <div className="stat-card">
-          <h2 style={{color: 'var(--on-surface-variant)', marginBottom: '1rem'}}>Profile Status</h2>
-          {profile ? (
-            <div style={{background: 'rgba(0,255,0,0.1)', padding: '1rem', borderRadius: '8px', border: '1px solid rgba(0,255,0,0.3)'}}>
-              <h3 style={{color: '#4ade80'}}>✅ Connected</h3>
-              <p>Your Supabase profile is active.</p>
-            </div>
-          ) : (
+      {/* Cinematic Command Center Analytics */}
+      <CinematicAnalytics 
+        role={role as 'company' | 'engineer'} 
+        data={{
+          proposalsCount: proposals.length,
+          contractsCount: contracts.length,
+          matchesCount: matches?.length,
+          invitationsCount: invitations?.length,
+          neuronScore: profile?.neuron_score,
+          jobCount: jobs?.length
+        }}
+      />
+
+      <div className="grid-2" style={{ marginTop: '0' }}>
+        {/* Profile Status remains as a critical utility, but styled more subtly */}
+        {!profile && (
+          <div className="stat-card" style={{ gridColumn: '1 / -1', marginBottom: '2rem' }}>
             <div style={{background: 'rgba(255,165,0,0.1)', padding: '1.5rem', borderRadius: '12px', border: '1px solid rgba(255,165,0,0.3)'}}>
               <h3 style={{color: '#fbbf24', marginBottom: '0.5rem'}}>⚠️ Missing Database Link</h3>
               <p style={{marginBottom: '1.5rem', fontSize: '0.9rem', color: 'var(--on-surface-variant)'}}>Your authentication is active, but your public profile is not initialized. This prevents you from posting jobs or applying.</p>
@@ -108,8 +117,8 @@ export default async function DashboardPage() {
                 </button>
               </form>
             </div>
-          )}
-        </div>
+          </div>
+        )}
 
         {/* Action Panel based on Role */}
         <div style={{gridColumn: '1 / -1', marginTop: '2rem'}}>
