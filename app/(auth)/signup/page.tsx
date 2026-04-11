@@ -14,21 +14,31 @@ export default function SignupPage() {
   const prevStep = () => setStep(s => s - 1)
 
   return (
-    <div style={{maxWidth: 540, margin: '4rem auto', padding: '0 1.5rem'}}>
-      <div style={{textAlign: 'center', marginBottom: '2.5rem'}}>
-        <h1 style={{fontSize: '2.5rem', fontWeight: 800, marginBottom: '0.5rem', background: 'linear-gradient(to right, #fff, var(--primary))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent'}}>
-          {step === 1 ? 'Join NeuralHire' : `Step ${step}: ${step === 2 ? 'AI Capability' : step === 3 ? 'Proof of Work' : 'Matching Engine'}`}
-        </h1>
-        <p style={{color: 'var(--on-surface-variant)'}}>
-          {step === 1 ? 'Start your AI career or find top AI talent' : 'Help us match you with the right opportunities'}
-        </p>
-      </div>
+    <div className="page-container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '90vh' }}>
+      <div className="glass-card" style={{ maxWidth: 640, width: '100%', padding: '3.5rem' }}>
+        <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+          <h1 style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '0.5rem', background: 'linear-gradient(to right, #fff, var(--primary))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+            {step === 1 ? 'Join NeuralHire' : `Step ${step}: ${step === 2 ? 'AI Capability' : step === 3 ? 'Proof of Work' : 'Matching Engine'}`}
+          </h1>
+          <p style={{ color: 'var(--on-surface-variant)', fontSize: '0.95rem' }}>
+            {step === 1 ? 'Start your AI career or find top AI talent' : 'Configure your neural profile for precision matching'}
+          </p>
+        </div>
 
-      {message && (
-        <p className="error-message" style={{color: 'red', textAlign: 'center', marginBottom: '1.5rem', padding: '0.75rem', background: 'rgba(255,0,0,0.1)', borderRadius: 'var(--radius-md)'}}>
-          {message}
-        </p>
-      )}
+        {message && (
+          <div style={{ 
+            padding: '1rem', 
+            background: 'rgba(255, 180, 171, 0.1)', 
+            border: '1px solid rgba(255, 180, 171, 0.2)', 
+            borderRadius: 'var(--radius-md)',
+            marginBottom: '1.5rem',
+            color: 'var(--error)',
+            fontSize: '0.85rem',
+            textAlign: 'center'
+          }}>
+            {message}
+          </div>
+        )}
 
       {/* Progress Bar */}
       {step > 1 && (
@@ -263,16 +273,21 @@ export default function SignupPage() {
         )}
       </form>
       
-      {step === 1 && (
-        <>
-          <div style={{textAlign: 'center', margin: '1.5rem 0', color: 'var(--outline)'}}>or</div>
-          <button className="btn-secondary" style={{width: '100%', marginBottom: '0.75rem'}}>Continue with GitHub</button>
-          <button className="btn-secondary" style={{width: '100%'}}>Continue with Google</button>
-          <p style={{textAlign: 'center', marginTop: '1.5rem', fontSize: '0.85rem', color: 'var(--on-surface-variant)'}}>
-            Already have an account? <Link href="/login">Sign In</Link>
-          </p>
-        </>
-      )}
+        {step === 1 && (
+          <>
+            <div style={{ textAlign: 'center', margin: '2rem 0', color: 'var(--outline)', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+              Alternative Protocols
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+              <button className="btn-secondary" style={{ width: '100%', fontSize: '0.8rem' }}>Continue with GitHub</button>
+              <button className="btn-secondary" style={{ width: '100%', fontSize: '0.8rem' }}>Continue with Google</button>
+            </div>
+            <p style={{ textAlign: 'center', marginTop: '2.5rem', fontSize: '0.85rem', color: 'var(--on-surface-variant)' }}>
+              Already have an account? <Link href="/login" style={{ color: 'var(--primary)', fontWeight: 600 }}>Sign In</Link>
+            </p>
+          </>
+        )}
+      </div>
     </div>
   )
 }
