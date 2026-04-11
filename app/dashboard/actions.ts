@@ -147,6 +147,92 @@ export async function publishProduct(formData: FormData) {
 }
 
 /**
+ * Persists an invitation sent from the Matching Engine.
+ */
+export async function sendInvitation(formData: FormData) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  if (!user) return { error: 'Not authenticated' }
+
+  const invitationData = {
+    company_id: user.id,
+    engineer_id: formData.get('engineer_id') as string,
+    job_id: formData.get('job_id') as string || null,
+    bounty_id: formData.get('bounty_id') as string || null,
+    message: formData.get('message') as string || 'We think you are a great fit for our AI mission!',
+    status: 'pending'
+  }
+
+  const { error } = await supabase.from('invitations').insert([invitationData])
+  
+  if (error) return { error: error.message }
+  
+  revalidatePath('/dashboard')
+  return { success: true }
+}
+
+/**
+ * Fetches invitations for the current engineer.
+ */
+export async function getEngineerInvitations() {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return []
+
+  const { data, error } = await supabase
+    .from('invitations')
+    .select('*, company:companies(company_name, industry), job:job_postings(title), bounty:bounties(title)')
+    .eq('engineer_id', user.id)
+    .eq('status', 'pending')
+    .order('created_at', { ascending: false })
+
+  if (error) {
+    console.error('Fetch Invitations Error:', error)
+    return []
+  }
+  return data || []
+}
+
+/**
+ * Handles Engineer's response to an offer.
+ */
+export async function respondToInvitation(invitationId: string, status: 'accepted' | 'declined') {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return { error: 'Not authenticated' }
+
+  // 1. Update invitation status
+  const { data: invite, error: updateError } = await supabase
+    .from('invitations')
+    .update({ status })
+    .eq('id', invitationId)
+    .eq('engineer_id', user.id)
+    .select('*, job_id, bounty_id, company_id')
+    .single()
+
+  if (updateError) return { error: updateError.message }
+
+  // 2. If 'B' (Final Handshake) - Create a formal proposal
+  if (status === 'accepted') {
+    const proposalData = {
+      job_id: invite.job_id,
+      bounty_id: invite.bounty_id,
+      engineer_id: user.id,
+      cover_letter: `Acceptance of Invitation: ${invite.message}`,
+      status: 'accepted', // This means "Talent has accepted the invite, Company must final hire"
+      match_origin: 'matching_engine'
+    }
+
+    const { error: propError } = await supabase.from('proposals').insert([proposalData])
+    if (propError) console.error('Proposal creation error:', propError)
+  }
+
+  revalidatePath('/dashboard')
+  return { success: true }
+}
+
+/**
  * MATCHING ENGINE: Precision Talent Discovery
  * Fetches and ranks engineers based on a company's active requirements.
  */

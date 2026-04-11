@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation'
 import { CompanyForms } from '@/components/dashboard/CompanyForms'
 import { EngineerForms } from '@/components/dashboard/EngineerForms'
 import NotificationCenter from '@/components/notifications/NotificationCenter'
-import { ensureProfileExists, getPrecisionMatches } from './actions'
+import { ensureProfileExists, getPrecisionMatches, getEngineerInvitations } from './actions'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -20,6 +20,7 @@ export default async function DashboardPage() {
   let contracts: any[] = [];
   let jobs: any[] = [];
   let matches: any[] = [];
+  let invitations: any[] = [];
 
   if (role === 'company') {
     const { data } = await supabase.from('companies').select('*').eq('id', user.id).single()
@@ -68,6 +69,9 @@ export default async function DashboardPage() {
       .select('*, job:job_postings(title), company:companies(company_name)')
       .eq('engineer_id', user.id)
     contracts = contData || []
+
+    // Fetch received offers/invitations for the engineer
+    invitations = await getEngineerInvitations()
   }
 
   return (
@@ -112,7 +116,7 @@ export default async function DashboardPage() {
             {role === 'company' ? (
               <CompanyForms profile={profile} proposals={proposals} contracts={contracts} jobs={jobs} matches={matches} />
              ) : (
-              <EngineerForms profile={profile} projects={projects} proposals={proposals} contracts={contracts} />
+              <EngineerForms profile={profile} projects={projects} proposals={proposals} contracts={contracts} invitations={invitations} />
             )}
         </div>
       </div>

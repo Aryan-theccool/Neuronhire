@@ -5,18 +5,20 @@ import { publishProduct } from '../../app/dashboard/actions'
 import { PortfolioEditor } from './PortfolioEditor'
 import { ProposalList } from './ProposalList'
 import { ContractList } from './ContractList'
+import { ReceivedOffers } from './ReceivedOffers'
 
 interface EngineerFormsProps {
   profile: any
   projects: any[]
   proposals: any[]
   contracts: any[]
+  invitations?: any[]
 }
 
 export function EngineerForms({ profile, projects, proposals, contracts }: EngineerFormsProps) {
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
-  const [activeTab, setActiveTab] = useState<'portfolio' | 'career' | 'marketplace'>('portfolio')
+  const [activeTab, setActiveTab] = useState<'portfolio' | 'career' | 'offers' | 'marketplace'>('portfolio')
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -48,6 +50,12 @@ export function EngineerForms({ profile, projects, proposals, contracts }: Engin
           Active Work
         </button>
         <button 
+          onClick={() => setActiveTab('offers')}
+          className={`tab-btn ${activeTab === 'offers' ? 'tab-btn--active' : ''}`}
+        >
+          Offers Received ✨
+        </button>
+        <button 
           onClick={() => setActiveTab('marketplace')}
           className={`tab-btn ${activeTab === 'marketplace' ? 'tab-btn--active' : ''}`}
         >
@@ -67,6 +75,10 @@ export function EngineerForms({ profile, projects, proposals, contracts }: Engin
              <ContractList contracts={contracts} role="engineer" />
              <ProposalList proposals={proposals} role="engineer" />
            </div>
+        )}
+        
+        {activeTab === 'offers' && (
+           <ReceivedOffers invitations={invitations || []} />
         )}
         
         {activeTab === 'marketplace' && (
