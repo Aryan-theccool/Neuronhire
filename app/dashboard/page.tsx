@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation'
 import { CompanyForms } from '@/components/dashboard/CompanyForms'
 import { EngineerForms } from '@/components/dashboard/EngineerForms'
 import NotificationCenter from '@/components/notifications/NotificationCenter'
-import { ensureProfileExists } from './actions'
+import { ensureProfileExists, getPrecisionMatches } from './actions'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -19,6 +19,7 @@ export default async function DashboardPage() {
   let proposals: any[] = [];
   let contracts: any[] = [];
   let jobs: any[] = [];
+  let matches: any[] = [];
 
   if (role === 'company') {
     const { data } = await supabase.from('companies').select('*').eq('id', user.id).single()
@@ -44,6 +45,9 @@ export default async function DashboardPage() {
       .select('*, job:job_postings(title), engineer:engineers(username, full_name)')
       .eq('company_id', user.id)
     contracts = contData || []
+    
+    // Fetch precision matches for the company
+    matches = await getPrecisionMatches(user.id)
 
   } else {
     const { data: pData } = await supabase.from('engineers').select('*').eq('id', user.id).single()
@@ -106,7 +110,7 @@ export default async function DashboardPage() {
         {/* Action Panel based on Role */}
         <div style={{gridColumn: '1 / -1', marginTop: '2rem'}}>
             {role === 'company' ? (
-              <CompanyForms profile={profile} proposals={proposals} contracts={contracts} jobs={jobs} />
+              <CompanyForms profile={profile} proposals={proposals} contracts={contracts} jobs={jobs} matches={matches} />
              ) : (
               <EngineerForms profile={profile} projects={projects} proposals={proposals} contracts={contracts} />
             )}

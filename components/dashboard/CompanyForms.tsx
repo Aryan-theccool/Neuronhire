@@ -6,18 +6,20 @@ import { createJobPosting, createBounty } from '../../app/dashboard/actions'
 import { ProposalList } from './ProposalList'
 import { ContractList } from './ContractList'
 import { formatCurrency } from '@/lib/utils'
+import { PrecisionMatches } from './PrecisionMatches'
 
 interface CompanyFormsProps {
   profile: any
   proposals: any[]
   contracts: any[]
   jobs?: any[]
+  matches?: any[]
 }
 
 export function CompanyForms({ profile, proposals, contracts, jobs = [] }: CompanyFormsProps) {
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
-  const [activeTab, setActiveTab] = useState<'hiring' | 'work'>('hiring')
+  const [activeTab, setActiveTab] = useState<'hiring' | 'work' | 'matches'>('hiring')
   const [successModal, setSuccessModal] = useState<{show: boolean, type: 'job' | 'bounty', id: string}>({
     show: false,
     type: 'job',
@@ -109,11 +111,16 @@ export function CompanyForms({ profile, proposals, contracts, jobs = [] }: Compa
         >
           Active Contracts ({contracts.length})
         </button>
+        <button 
+          onClick={() => setActiveTab('matches')}
+          className={`tab-btn ${activeTab === 'matches' ? 'tab-btn--active' : ''}`}
+        >
+          Precision Matches ✨
+        </button>
       </div>
 
       {message && <div style={{padding: '1rem', background: 'var(--error-container)', color: 'var(--error)', borderRadius: '4px', border: '1px solid var(--error)'}}>{message}</div>}
       
-      {activeTab === 'hiring' ? (
         <div style={{display: 'flex', flexDirection: 'column', gap: '3rem'}}>
           
           {/* NEW: DASHBOARD JOB LIST FOR TRANSPARENCY */}
@@ -231,8 +238,10 @@ export function CompanyForms({ profile, proposals, contracts, jobs = [] }: Compa
             </form>
           </div>
         </div>
-      ) : (
+      ) : activeTab === 'work' ? (
         <ContractList contracts={contracts} role="company" />
+      ) : (
+        <PrecisionMatches engineers={matches || []} />
       )}
     </div>
   )

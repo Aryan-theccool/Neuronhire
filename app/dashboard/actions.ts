@@ -145,3 +145,70 @@ export async function publishProduct(formData: FormData) {
   revalidatePath('/dashboard')
   return { success: true, id: data.id }
 }
+
+/**
+ * MATCHING ENGINE: Precision Talent Discovery
+ * Fetches and ranks engineers based on a company's active requirements.
+ */
+export async function getPrecisionMatches(companyId: string) {
+  const supabase = await createClient()
+
+  // 1. Fetch company's active requirements (Job Postings & Bounties)
+  const [{ data: jobs }, { data: bounties }] = await Promise.all([
+    supabase.from('job_postings').select('skills_required').eq('company_id', companyId).eq('status', 'open'),
+    supabase.from('bounties').select('skills_needed').eq('company_id', companyId).eq('status', 'open')
+  ])
+
+  // 2. Aggregate all unique required skills
+  const allRequiredSkills = new Set<string>()
+  jobs?.forEach(j => j.skills_required?.forEach((s: string) => allRequiredSkills.add(s.toLowerCase())))
+  bounties?.forEach(b => b.skills_needed?.forEach((s: string) => allRequiredSkills.add(s.toLowerCase())))
+  
+  const skillArray = Array.from(allRequiredSkills)
+
+  if (skillArray.length === 0) return []
+
+  // 3. Query engineers who have AT LEAST ONE matching skill OR high NeuronScore
+  // Using .overlaps('ai_stack', skillArray) for efficient matching
+  const { data: engineers, error } = await supabase
+    .from('engineers')
+    .select('*')
+    .eq('is_available', true)
+    .or(`ai_stack.overlaps.{${skillArray.join(',')}},neuron_score.gt.85`)
+    .order('neuron_score', { ascending: false })
+    .limit(30)
+
+  if (error) {
+    console.error('Matching Error:', error)
+    return []
+  }
+
+  // 4. Rank by our Hybrid Heuristic
+  const rankedMatches = (engineers || []).map(engineer => {
+    const engineerStack = (engineer.ai_stack || []).map((s: string) => s.toLowerCase())
+    const matchedSkills = skillArray.filter(s => engineerStack.includes(s))
+    
+    // Weighted Heuristic: 60% Skill overlap, 40% NeuronScore
+    const skillScore = skillArray.length > 0 ? (matchedSkills.length / skillArray.length) * 60 : 0
+    const neuronWeight = (engineer.neuron_score / 100) * 40
+    const totalMatchScore = Math.min(Math.round(skillScore + neuronWeight), 100)
+
+    // Generate reasoning text
+    let reasoning = ''
+    if (matchedSkills.length > 0) {
+      reasoning = `Matches your focus on: ${matchedSkills.slice(0, 3).join(', ')}`
+    } else {
+      reasoning = 'Elite performance score in related AI disciplines.'
+    }
+
+    return {
+      ...engineer,
+      match_score: totalMatchScore,
+      matched_skills: matchedSkills,
+      reasoning
+    }
+  })
+
+  // Sort by final match score
+  return rankedMatches.sort((a, b) => b.match_score - a.match_score)
+}
