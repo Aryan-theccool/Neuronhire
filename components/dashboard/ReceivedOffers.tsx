@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { respondToInvitation } from '@/app/dashboard/actions'
+import { createHandshakeRoom } from '@/app/dashboard/handshake-actions'
 
 interface Invitation {
   id: string
@@ -39,7 +40,12 @@ export function ReceivedOffers({ invitations }: ReceivedOffersProps) {
     
     if (res.error) alert(res.error)
     else {
-      alert(status === 'accepted' ? 'Handshake initiated! The company has been notified.' : 'Offer declined.')
+      if (status === 'accepted') {
+        setLoading(id)
+        await createHandshakeRoom(id) // This redirects automatically
+      } else {
+        alert('Offer declined.')
+      }
     }
   }
 
