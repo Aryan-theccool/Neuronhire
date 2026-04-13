@@ -51,7 +51,6 @@ export default function ProductCard({ product }: ProductCardProps) {
   const stars = Math.round(rating)
 
   return (
-  return (
     <div className="glass-card-premium group" style={{ padding: '0', overflow: 'hidden', display: 'flex', flexDirection: 'column', height: '100%' }}>
       {/* Thumbnail / Header Area */}
       <div style={{ position: 'relative', width: '100%', aspectRatio: '16/9', background: 'var(--surface-container-low)', overflow: 'hidden' }}>
@@ -131,7 +130,5 @@ export default function ProductCard({ product }: ProductCardProps) {
         </div>
       </div>
     </div>
-  )
-}
   )
 }
